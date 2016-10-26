@@ -1,0 +1,8 @@
+language: csharp
+solution: CSharpTraining.sln
+install:
+- nuget restore CSharpTraining.sln
+- nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+- xbuild /p:Configuration=Debug CSharpTraining.sln
+- mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./CSharpTraining.Tests/bin/Debug/CSharpTraining.Tests.dll
