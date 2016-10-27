@@ -46,5 +46,11 @@
   <ItemGroup>
     <Content Include="CSharpTraining.Tests.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj">
+      <Project>{67261e03-d263-4c42-a5ad-2a4820231b28}</Project>
+      <Name>MonoBrickFirmware</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
