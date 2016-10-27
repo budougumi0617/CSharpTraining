@@ -61,6 +61,10 @@
       <Project>{4B4D93F6-AB41-4404-A615-E484752886BE}</Project>
       <Name>CSharpTraining</Name>
     </ProjectReference>
+    <ProjectReference Include="..\monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj">
+      <Project>{67261e03-d263-4c42-a5ad-2a4820231b28}</Project>
+      <Name>MonoBrickFirmware</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
