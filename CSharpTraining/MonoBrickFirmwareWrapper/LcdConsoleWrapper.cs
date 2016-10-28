@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSharpTraining.MonoBrickFirmwareWrapper
 {
-	class LcdConsoleWrapper
+	static class LcdConsoleWrapper
 	{
 	}
 }
