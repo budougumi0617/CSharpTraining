@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using CSharpTraining;
 using MonoBrickFirmware.Movement;
+using NUnit.Framework;
 
 namespace NUnitSample.Tests
 {
