@@ -6,12 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpTraining", "CSharpTra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1B1C2E7-CCC5-45E4-9CEE-20823549018C}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
+		.appveyor.yml = .appveyor.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoBrickFirmware", "monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj", "{67261E03-D263-4C42-A5AD-2A4820231B28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitSample.Tests", "NUnitSample.Tests\XUnitSample.Tests.csproj", "{F12663F4-5243-492E-95AC-48DB7D137689}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitSample.Tests", "XUnitSample.Tests\XUnitSample.Tests.csproj", "{F12663F4-5243-492E-95AC-48DB7D137689}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
