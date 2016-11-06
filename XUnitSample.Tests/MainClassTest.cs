@@ -18,7 +18,7 @@ namespace XUnitSample.Tests
 		{
 			Xunit.Assert.True(true);
 			Xunit.Assert.Equal(10, MainClass.SampleMethod());
-			var foo = new Motor(MotorPort.OutA);
+			var foo = new Object();
 			var same = foo;
 			Xunit.Assert.Same(foo, same); // Verify their variables are same object.
 		}
