@@ -16,7 +16,7 @@ build:
   project: CSharpTraining.sln
   verbosity: minimal
 test_script:
-- ps: "$opencover = (Resolve-Path \"./packages/OpenCover.*/tools/OpenCover.Console.exe\").ToString()\n$runner = (Resolve-Path \".\\packages\\xunit.runner.console.*\\tools\\xunit.console.x86.exe\").ToString()\n$targetargs = \"\"\"NUnitSample.Tests.dll\"\" -noshadow -appveyor\"\n$filter = \"\"\n \n& $opencover -register:user -target:$runner \"-targetargs:$targetargs\" -targetdir: \"-filter:$filter\" -returntargetcode -hideskipped:All -output:opencoverCoverage.xml\n \n$env:Path = \"C:\\Python34;C:\\Python34\\Scripts;$env:Path\"\npython -m pip install --upgrade pip\npip install codecov\n&{codecov -f \"opencoverCoverage.xml\"}"
+- ps: "$opencover = (Resolve-Path \"./packages/OpenCover.*/tools/OpenCover.Console.exe\").ToString()\n$runner = (Resolve-Path \".\\packages\\xunit.runner.console.*\\tools\\xunit.console.x86.exe\").ToString()\n$targetargs = \"\"\"NUnitSample.Tests.dll\"\" -noshadow -appveyor\"\n$filter = \"\"\n \n& $opencover -register:user -target:$runner \"-targetargs:$targetargs\" -targetdir:$env:test_dll_dir \"-filter:$filter\" -returntargetcode -hideskipped:All -output:opencoverCoverage.xml\n \n$env:Path = \"C:\\Python34;C:\\Python34\\Scripts;$env:Path\"\npython -m pip install --upgrade pip\npip install codecov\n&{codecov -f \"opencoverCoverage.xml\"}"
 notifications:
 - provider: GitHubPullRequest
   on_build_success: true
