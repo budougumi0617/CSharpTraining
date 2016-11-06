@@ -12,5 +12,10 @@ namespace CSharpTraining
 			// output to lcd console of EV3
 			LcdConsoleWrapper.WriteLine("Hello World!");
 		}
+
+		public static int SampleMethod()
+		{
+			return 10;
+		}
 	}
 }
