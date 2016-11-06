@@ -17,25 +17,25 @@ build:
   verbosity: minimal
 test_script:
 - ps: >-
-  $opencover = (Resolve-Path "./packages/OpenCover.*/tools/OpenCover.Console.exe").ToString()
+    $opencover = (Resolve-Path "./packages/OpenCover.*/tools/OpenCover.Console.exe").ToString()
 
-  $runner = (Resolve-Path ".\packages\xunit.runner.console.*\tools\xunit.console.x86.exe").ToString()
+    $runner = (Resolve-Path ".\packages\xunit.runner.console.*\tools\xunit.console.x86.exe").ToString()
 
-  # Set OpenCover setting according to below URL
-  # https://github.com/OpenCover/opencover/wiki/Usage
-  $targetargs = """XUnitSample.Tests.dll"" -noshadow -appveyor"
+    # Set OpenCover setting according to below URL
+    # https://github.com/OpenCover/opencover/wiki/Usage
+    $targetargs = """XUnitSample.Tests.dll"" -noshadow -appveyor"
 
-  $filter = "+[CSharpTraining*]* -[.Test*]*"
+    $filter = "+[CSharpTraining*]* -[.Test*]*"
 
-  & $opencover -register:user -target:$runner "-targetargs:$targetargs" -targetdir:$env:test_dll_dir "-filter:$filter" -returntargetcode -hideskipped:All -output:opencoverCoverage.xml
+    & $opencover -register:user -target:$runner "-targetargs:$targetargs" -targetdir:$env:test_dll_dir "-filter:$filter" -returntargetcode -hideskipped:All -output:opencoverCoverage.xml
 
-  $env:Path = "C:\Python34;C:\Python34\Scripts;$env:Path"
+    $env:Path = "C:\Python34;C:\Python34\Scripts;$env:Path"
 
-  python -m pip install --upgrade pip
+    python -m pip install --upgrade pip
 
-  pip install codecov
+    pip install codecov
 
-  &{codecov -f "opencoverCoverage.xml"}"
+    &{codecov -f "opencoverCoverage.xml"}"
 
 
 notifications:
