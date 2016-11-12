@@ -5,3 +5,7 @@
 
 
 C# training
+
+# Initialize
+We need to clone submodules.
+git submodule update --init --recursive
