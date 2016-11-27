@@ -36,6 +36,10 @@ namespace SandBox
 		[ImportMany]
 		private IEnumerable<Lazy<IPlugin, IPluginMetadataView>> plugins;
 
+
+		/// <summary>
+		/// Execute after complete MEF injection.
+		/// </summary>
 		public void OnImportsSatisfied()
 		{
 			ShowPlugins();

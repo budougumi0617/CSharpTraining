@@ -32,11 +32,13 @@ namespace SandBox
 	{
 		public static void Main(string[] args)
 		{
+			// Get MEF Container from Directory.
 			var catalog = new AggregateCatalog();
 			catalog.Catalogs.Add(new DirectoryCatalog(@"./Plugins"));
 			var container = new CompositionContainer(catalog);
 
 			var executor = new PluginExecutor();
+			// Inject MEF container.
 			container.SatisfyImportsOnce(executor);
 
 		}

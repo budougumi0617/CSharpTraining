@@ -28,10 +28,17 @@ using System.ComponentModel.Composition;
 
 namespace Plugins.Core
 {
+	/// <summary>
+	/// This custom Attribute is used to discern each plugin.
+	/// </summary>
 	[MetadataAttribute]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
 	{
+		/// <summary>
+		/// Create plugin ID string by <see cref="System.Type"/>.
+		/// </summary>
+		/// <param name="id">Plugin class.</param>
 		public PluginExportAttribute(Type id)
 			: base(typeof(IPlugin))
 		{
@@ -39,6 +46,9 @@ namespace Plugins.Core
 			pluginId = id.FullName;
 		}
 
+		/// <summary>
+		/// Full name of Plugin Class
+		/// </summary>
 		private string pluginId;
 		public string PluginId
 		{

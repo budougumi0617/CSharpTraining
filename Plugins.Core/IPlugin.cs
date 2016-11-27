@@ -26,9 +26,23 @@
 
 namespace Plugins.Core
 {
+
+	/// <summary>
+	/// Base interface in Plugin design.
+	/// </summary>
 	public interface IPlugin
 	{
+		/// <summary>
+		/// Return Plugin full name.
+		/// </summary>
 		string Name();
+
+		/// <summary>
+		/// Execute something.
+		/// </summary>
+		/// <returns>
+		/// Custome result.
+		/// </returns>
 		IPluginResult Run();
 	}
 }
