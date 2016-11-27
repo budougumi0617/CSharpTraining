@@ -30,6 +30,6 @@ namespace Plugins.Core
 	public interface IPlugin
 	{
 		string Name();
-		void Run();
+		IPluginResult Run();
 	}
 }

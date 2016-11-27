@@ -1,5 +1,5 @@
 ﻿//
-// PluginExportAttribute.cs
+// MyClass.cs
 //
 // Author:
 //       budougumi0617 <budougumi0617@gmail.com>
@@ -25,27 +25,27 @@
 // THE SOFTWARE.
 using System;
 using System.ComponentModel.Composition;
+using Plugins.Core;
 
-namespace Plugins.Core
+namespace Plugins.SamplePlugin
 {
-	[MetadataAttribute]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
+	[Export(typeof(IPlugin))]
+	[PluginExport(typeof(SamplePlugin))]
+	public class SamplePlugin : IPlugin
 	{
-		public PluginExportAttribute(Type id)
-			: base(typeof(IPlugin))
+		public SamplePlugin()
 		{
-
-			pluginId = id.FullName;
 		}
 
-		private string pluginId;
-		public string PluginId
+		public string Name()
 		{
-			get
-			{
-				return pluginId;
-			}
+			return this.GetType().FullName;
+		}
+
+		IPluginResult IPlugin.Run()
+		{
+			var result = new SamplePluginResult(true);
+			return result;
 		}
 	}
 }

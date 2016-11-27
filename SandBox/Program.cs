@@ -1,5 +1,5 @@
 ﻿//
-// PluginExportAttribute.cs
+// Program.cs
 //
 // Author:
 //       budougumi0617 <budougumi0617@gmail.com>
@@ -24,28 +24,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.ComponentModel.Composition.Hosting;
+using Microsoft.Practices.ServiceLocation;
+using System.Reflection;
 using System.ComponentModel.Composition;
+using Plugins.Core;
 
-namespace Plugins.Core
+namespace SandBox
 {
-	[MetadataAttribute]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
+	class MainClass
 	{
-		public PluginExportAttribute(Type id)
-			: base(typeof(IPlugin))
+		public static void Main(string[] args)
 		{
+			var catalog = new AggregateCatalog();
+			catalog.Catalogs.Add(new DirectoryCatalog(@"./Plugins"));
+			var container = new CompositionContainer(catalog);
 
-			pluginId = id.FullName;
-		}
+			var executor = new PluginExecutor();
+			container.SatisfyImportsOnce(executor);
 
-		private string pluginId;
-		public string PluginId
-		{
-			get
-			{
-				return pluginId;
-			}
 		}
 	}
 }

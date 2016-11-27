@@ -1,5 +1,5 @@
 ﻿//
-// PluginExportAttribute.cs
+// AssemblyInfo.cs
 //
 // Author:
 //       budougumi0617 <budougumi0617@gmail.com>
@@ -23,29 +23,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.ComponentModel.Composition;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-namespace Plugins.Core
-{
-	[MetadataAttribute]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
-	{
-		public PluginExportAttribute(Type id)
-			: base(typeof(IPlugin))
-		{
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
 
-			pluginId = id.FullName;
-		}
+[assembly: AssemblyTitle("Plugins.SamplePlugin")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-		private string pluginId;
-		public string PluginId
-		{
-			get
-			{
-				return pluginId;
-			}
-		}
-	}
-}
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+
+[assembly: AssemblyVersion("1.0.*")]
+
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]

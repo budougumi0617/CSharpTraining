@@ -1,5 +1,5 @@
 ﻿//
-// PluginExportAttribute.cs
+// PluginExecutor.cs
 //
 // Author:
 //       budougumi0617 <budougumi0617@gmail.com>
@@ -25,27 +25,38 @@
 // THE SOFTWARE.
 using System;
 using System.ComponentModel.Composition;
+using System.Collections.Generic;
+using Plugins.Core;
+using System.Linq;
 
-namespace Plugins.Core
+namespace SandBox
 {
-	[MetadataAttribute]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
+	public class PluginExecutor : IPartImportsSatisfiedNotification
 	{
-		public PluginExportAttribute(Type id)
-			: base(typeof(IPlugin))
-		{
+		[ImportMany]
+		private IEnumerable<Lazy<IPlugin, IPluginMetadataView>> plugins;
 
-			pluginId = id.FullName;
+		public void OnImportsSatisfied()
+		{
+			ShowPlugins();
 		}
 
-		private string pluginId;
-		public string PluginId
+		public void ShowPlugins()
 		{
-			get
+			Console.WriteLine("----------------------\nPrint Plugin list.\n");
+			foreach (var p in plugins)
 			{
-				return pluginId;
+
+				Console.WriteLine(p.Value.Name());
 			}
+
+			var target = plugins
+				.Where(p => p.Metadata.PluginId.Equals("Plugins.SamplePlugin.SamplePlugin"))
+				.ToList();
+
+			target.ForEach(p => Console.WriteLine("Executed plugin name : " + p.Value.Name()));
+
 		}
+
 	}
 }

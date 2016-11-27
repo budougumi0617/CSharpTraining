@@ -1,5 +1,7 @@
-﻿//
-// PluginExportAttribute.cs
+﻿
+
+//
+// PluginResult.cs
 //
 // Author:
 //       budougumi0617 <budougumi0617@gmail.com>
@@ -24,27 +26,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.ComponentModel.Composition;
+using Plugins.Core;
 
-namespace Plugins.Core
+
+namespace Plugins.SamplePlugin
 {
-	[MetadataAttribute]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
+	public class SamplePluginResult : IPluginResult
 	{
-		public PluginExportAttribute(Type id)
-			: base(typeof(IPlugin))
+		public SamplePluginResult(bool status)
 		{
-
-			pluginId = id.FullName;
+			this.status = status;
 		}
 
-		private string pluginId;
-		public string PluginId
+		private bool status;
+		public bool Status
 		{
 			get
 			{
-				return pluginId;
+				return status;
 			}
 		}
 	}

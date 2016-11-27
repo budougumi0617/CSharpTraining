@@ -1,5 +1,5 @@
 ﻿//
-// PluginExportAttribute.cs
+// PluginResult.cs
 //
 // Author:
 //       budougumi0617 <budougumi0617@gmail.com>
@@ -23,29 +23,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.ComponentModel.Composition;
 
 namespace Plugins.Core
 {
-	[MetadataAttribute]
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class PluginExportAttribute : ExportAttribute, IPluginMetadataView
+	public interface IPluginResult
 	{
-		public PluginExportAttribute(Type id)
-			: base(typeof(IPlugin))
-		{
-
-			pluginId = id.FullName;
-		}
-
-		private string pluginId;
-		public string PluginId
-		{
-			get
-			{
-				return pluginId;
-			}
-		}
+		bool Status { get; }
 	}
 }
