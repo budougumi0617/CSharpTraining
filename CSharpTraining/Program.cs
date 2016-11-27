@@ -1,5 +1,5 @@
 ﻿using System;
-using CSharpTraining.MonoBrickFirmwareWrapper;
+using MonoBrickFirmwareWrapper.Display;
 
 namespace CSharpTraining
 {
