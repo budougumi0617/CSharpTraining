@@ -25,22 +25,32 @@
 // THE SOFTWARE.
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Threading;
 
 namespace SandBox
 {
-	class MainClass
-	{
-		public static void Main(string[] args)
-		{
-			// Get MEF Container from Directory.
-			var catalog = new AggregateCatalog();
-			catalog.Catalogs.Add(new DirectoryCatalog(@"./Plugins"));
-			var container = new CompositionContainer(catalog);
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            // Get MEF Container from Directory.
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new DirectoryCatalog(@"./Plugins"));
+            var container = new CompositionContainer(catalog);
 
-			var executor = new PluginExecutor();
-			// Inject MEF container.
-			container.SatisfyImportsOnce(executor);
+            var executor = new PluginExecutor();
+            // Inject MEF container.
+            container.SatisfyImportsOnce(executor);
 
-		}
-	}
+            var cs = new CancellationTokenSource();
+            var ts = new TaskSample(cs);
+            var task = ts.CountAsync();
+
+            System.Console.WriteLine("In Main");
+            Thread.Sleep(3 * 1000);
+            cs.Cancel();
+            System.Console.WriteLine("Canceled.");
+            task.Wait();
+        }
+    }
 }
