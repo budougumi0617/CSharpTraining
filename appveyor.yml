@@ -19,7 +19,7 @@ build:
 
 test_script:
 - ps: >-
-    $test_dll_dir = (Resolve-Path "*.Tests\bin\$env:CONFIGURATION").ToString()
+    $test_dll_dir = $(Resolve-Path "*.Tests\bin\$env:CONFIGURATION").ToString()
 
     $opencover = (Resolve-Path ".\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
 
