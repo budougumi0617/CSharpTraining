@@ -35,8 +35,6 @@ test_script:
 
     pip install codecov
 
-    cat opencoverCoverage.xml
-
     &{codecov -f "opencoverCoverage.xml"}
 
 
