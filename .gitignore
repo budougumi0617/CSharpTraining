@@ -42,3 +42,4 @@ Thumbs.db
 # Test runner
 testrunner/
 TestResult.xml
+coverrage.xml

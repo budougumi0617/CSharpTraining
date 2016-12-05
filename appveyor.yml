@@ -1,6 +1,4 @@
 version: 0.0.{build}
-environment:
-  test_dll_dir: XUnitSample.Tests\bin\Debug
 pull_requests:
   do_not_increment_build_number: true
 configuration: Debug
@@ -21,15 +19,15 @@ build:
 
 test_script:
 - ps: >-
-    $opencover = (Resolve-Path "./packages/OpenCover.*/tools/OpenCover.Console.exe").ToString()
+    $test_dll_dir = (Resolve-Path "*.Tests\bin\$env:CONFIGURATION").ToString()
 
-    $runner = (Resolve-Path ".\packages\xunit.runner.console.*\tools\xunit.console.x86.exe").ToString()
+    $opencover = (Resolve-Path ".\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
 
-    $targetargs = """XUnitSample.Tests.dll"" -noshadow -appveyor"
+    $targetargs = """$((Resolve-Path "$test_dll_dir\*.Tests.dll").ToString())"" -noshadow"
 
-    $filter = "+[CSharpTraining*]* -[XUnitSample.Tests*]*"
+    $filter = "+[CSharpTraining*]* -[*.Tests*]*"
 
-    & $opencover -register:user -target:$runner "-targetargs:$targetargs" -targetdir:$env:test_dll_dir "-filter:$filter" -returntargetcode -hideskipped:All -output:opencoverCoverage.xml
+    & $opencover -register:user -target:nunit-console.exe "-targetargs:$targetargs" "-filter:$filter" -log:All -returntargetcode -hideskipped:All -output:opencoverCoverage.xml
 
     $env:Path = "C:\Python34;C:\Python34\Scripts;$env:Path"
 
