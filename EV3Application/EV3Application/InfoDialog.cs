@@ -6,37 +6,35 @@ using MonoBrickFirmware.Display;
 namespace EV3Application.LCD
 {
 	/// <summary>
-    /// InfoDialogをLCD画面上に表示するクラス。
-    /// <see cref="EV3Application.LCD.AlphanumericDisplayBase"/>を継承する。
+	/// InfoDialogを画面に表示するクラス。
 	/// </summary>
-    public class InfoDialog : AlphanumericDisplayBase
+	public class InfoDialog : AlphanumericDisplayBase
 	{
-		private string title = "Information";
+		private string title = "Information"; //ダイアログのタイトル
 		
-        /// <summary>
-        /// コンストラクタ。
-        /// ダイアログの内容を設定する。
-        /// </summary>
-        /// <param name="message">ダイアログの内容</param>
-        public InfoDialog (string message)
+		/// <summary>
+		/// 表示するダイアログのメッセージを初期化し、インスタンスを生成する。
+		/// </summary>
+		/// <param name="message">ダイアログのメッセージ</param>
+		public InfoDialog(string message)
 		{
 			Message = message;
 		}
 
-        /// <summary>
-        /// LCD画面上にInfoDialogを表示する。
-        /// </summary>
-        /// <exception cref="System.InvalidOperationException"/>
-        /// <see cref="EV3Application.LCD.AluphanumericDisplaybase.isAlphanumeic"/>の戻り値が<c>false</c>のときにthrowされる。
-        /// </exception>
-		public override void Show ()
+		/// <summary>
+		/// 画面にInfoDialogを表示する。
+		/// </summary>
+		/// <exception cref="System.InvalidOperationException">
+		/// 表示するダイアログのメッセージが半角英数字スペース以外を含むときに例外を出す。
+		/// </exception>
+		public override void Show()
 		{
-			if (!(isAlphanumeric())) {
+			if(!(isAlphanumeric())){
 				throw new InvalidOperationException();
-			} else {
-				MonoBrickFirmware.Display.Dialogs.InfoDialog iDialog = new MonoBrickFirmware.Display.Dialogs.InfoDialog (Message,title);
-				iDialog.Show ();
 			}
+
+			MonoBrickFirmware.Display.Dialogs.InfoDialog iDialog = new MonoBrickFirmware.Display.Dialogs.InfoDialog(Message,title);
+			iDialog.Show();
 		}
 
 	}

@@ -4,17 +4,17 @@ using System;
 namespace EV3Application
 {
 	/// <summary>
-	/// EV3アプリケーションを開始と終了を管理する。
+	/// EV3アプリケーションを開始するクラス。
 	/// </summary>
 	class EV3Start
 	{
 		/// <summary>
-		/// アプリケーションの開始点であり、開始と終了を管理する。
+		/// メインメソッド。
 		/// </summary>
-		public static void Main ()
+		public static void Main()
 		{
-			EV3Controller controller = new EV3Controller ();
-			controller.ControlEV3 ();
+			EV3Controller controller = new EV3Controller();
+			controller.ControlEV3();
 		}
 	}
 }

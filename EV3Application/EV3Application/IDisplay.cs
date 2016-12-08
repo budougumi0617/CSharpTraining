@@ -2,20 +2,22 @@
 
 namespace EV3Application.LCD
 {
-    /// <summary>
-    /// インターフェイス
-    /// LCD画面に表示する文字列またはダイアログの内容と、表示するメソッドをメンバとして持つ。
-    /// </summary>
+	/// <summary>
+	/// 画面表示を司るインターフェース。
+	/// </summary>
 	public interface IDisplay
 	{
 		/// <summary>
-		/// 表示する文字列、またはダイアログの内容。
+		/// 画面に表示するメッセージ。
 		/// </summary>
-        string Message{ get; set;}
+		string Message{get; set;}
 
-        /// <summary>
-        /// LCD画面上に文字列、またはダイアログを表示する。
-        /// </summary>
+		/// <summary>
+		/// 画面に表示する。
+		/// </summary>
+		/// <exception cref="System.InvalidOperationException">
+		/// ディスプレイが画面に表示できない場合に例外を出す
+		/// </exception>
 		void Show();
 	}
 }
