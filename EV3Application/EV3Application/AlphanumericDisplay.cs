@@ -31,7 +31,8 @@ namespace EV3Application.LCD
 		/// </exception>
 		public override void Show()
 		{
-			if(!(isAlphanumeric())){
+			if(!(isAlphanumeric()))
+			{
 				throw new InvalidOperationException();
 			}
 

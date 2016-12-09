@@ -19,8 +19,8 @@ namespace EV3Application
 			ManualResetEvent sendSignal = new ManualResetEvent(false);
 			LCD.LCDController controller = new LCD.LCDController(sendSignal);
 			
-			ButtonEvents bevent = new ButtonEvents();
-			bevent.EnterPressed += () => {
+			ButtonEvents bEvent = new ButtonEvents();
+			bEvent.EnterPressed += () => {
 				controller.EnterPressed();
 			};
 			

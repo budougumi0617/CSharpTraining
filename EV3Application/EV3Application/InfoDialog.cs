@@ -22,14 +22,15 @@ namespace EV3Application.LCD
 		}
 
 		/// <summary>
-		/// 画面にInfoDialogを表示する。
+		/// 画面に<c>InfoDialog</c>を表示する。
 		/// </summary>
 		/// <exception cref="System.InvalidOperationException">
 		/// 表示するダイアログのメッセージが半角英数字スペース以外を含むときに例外を出す。
 		/// </exception>
 		public override void Show()
 		{
-			if(!(isAlphanumeric())){
+			if(!(isAlphanumeric()))
+			{
 				throw new InvalidOperationException();
 			}
 

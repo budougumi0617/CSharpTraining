@@ -56,24 +56,25 @@ namespace EV3Application.LCD
 		/// <remarks>
 		/// <list type="bullet">
 		/// <item>
-		/// <description><see cref="EV3Application.LCDController.State.Started"/>の時、InfoDialogを表示する。</description>
+		/// <description><see cref="EV3Application.LCDController.State.Started"/>の時、<c>InfoDialog</c>を表示する。</description>
 		/// </item>
 		/// <item>
-		/// <description><see cref="EV3Application.LCDController.State.ClosedInfoDialog"/>の時、文字列Helloを表示する。</description>
+		/// <description><see cref="EV3Application.LCDController.State.ClosedInfoDialog"/>の時、文字列<c>Hello</c>を表示する。</description>
 		/// </item>
 		/// <item>
-		/// <description><see cref="EV3Application.LCDController.State.ClearedTextHello"/>の時、文字列Good Byeを表示する。</description>
+		/// <description><see cref="EV3Application.LCDController.State.ClearedTextHello"/>の時、文字列<c>Good Bye</c>を表示する。</description>
 		/// </item>
 		/// <item>
-		/// <description>上記以外の時、何もせずreturnする。
+		/// <description>上記以外の時、何もせずに終了する。
 		/// </item>
 		/// </list>
 		/// </remarks>
 		public void ControlLCD()
 		{
-
-			while(state != State.End){
-				switch(state){
+			while(state != State.End)
+			{
+				switch(state)
+				{
 
 				case State.Started:
 					showInfoDialog();
@@ -82,45 +83,49 @@ namespace EV3Application.LCD
 				case State.ClosedInfoDialog:
 					currentDisplay = new AlphanumericDisplay("Hello");
 					showAlphanumericDisplay();
-					if (state == State.END){
+					if (state == State.End)
+					{
 						return;
 					}
-					else{
-						state = State.CLEAREDTEXTHELLO;
+					else
+					{
+						state = State.ClearedTextHello;
 					}
 					break;
 
 				case State.ClearedTextHello:
 					currentDisplay.Message = "Good Bye";
 					showAlphanumericDisplay();
-					state = State.END;
+					state = State.End;
 					break;
 
 				default:
-					state = State.END;
+					state = State.End;
 					break;
 				}
 			}
 		}
 									
 		/// <summary>
-		/// LCD画面上にInfoDialogを表示する。
+		/// LCD画面上に<c>InfoDialog</c>を表示する。
 		/// </summary>
 		/// <remarks>
-		/// <para>ユーザー入力があるまでこのメソッドから戻らない</para>
-		/// <para>エラーが発生しなければ、InfoDialog表示後に<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.ClosedInfoDialog"/>に変更する。</para>
-		/// <para>エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。</para>
+		/// ユーザー入力があるまでこのメソッドから戻らない。</br>
+		/// エラーが発生しなければ、InfoDialog表示後に<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.ClosedInfoDialog"/>に変更する。</br>
+		/// エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。
 		/// </remarks>
 		private void showInfoDialog()
 		{
 
 			currentDisplay = new InfoDialog("Please Push The EnterButton");
-			try {
+			try
+			{
 				currentDisplay.Show();
-				state = State.CLOSEDINFODIALOG;
+				state = State.ClosedInfoDialog;
 			}
-			catch(Exception e){
-				state = State.END;
+			catch(Exception e)
+			{
+				state = State.End;
 			}
 		}
 
@@ -128,20 +133,22 @@ namespace EV3Application.LCD
 		/// LCD画面上に文字列を表示する。
 		/// </summary>
 		/// <remarks>
-		/// <para>ユーザ入力があるか、5秒経過するまでこのメソッドから戻らない</para>
-		/// <para>エラーが発生しなければ、文字列を5秒間表示する。</para>
-		/// <para>エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。</para>
+		/// ユーザ入力があるか、5秒経過するまでこのメソッドから戻らない。</br>
+		/// エラーが発生しなければ、文字列を5秒間表示する。</br>
+		/// エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。
 		/// </remarks>
 		private void showAlphanumericDisplay()
 		{
 
-			try{
+			try
+			{
 				currentDisplay.Show();
 				sendSignal.Reset();
 				sendSignal.WaitOne(5000);
 			}
-			catch(Exception e){
-				state = State.END;
+			catch(Exception e)
+			{
+				state = State.End;
 			}
 		}
 
@@ -149,13 +156,14 @@ namespace EV3Application.LCD
 		/// EnterButtonが押下された際の処理を実行する。
 		/// </summary>
 		/// <remarks>
-		/// <para><see cref="state"/>が<see cref="EV3Application.LCDController.State.Started"/>の時、何もしない。</para>
-		/// <para><see cref="state"/>が<see cref="EV3Application.LCDController.State.Started"/>以外の時、<see cref="EV3Application.LCDController.State.End"/>に変更し、処理待ち状態を解除する。</para>
+		/// <see cref="state"/>が<see cref="EV3Application.LCDController.State.Started"/>の時、何もしない。</br>
+		/// <see cref="state"/>が<see cref="EV3Application.LCDController.State.Started"/>以外の時、<see cref="EV3Application.LCDController.State.End"/>に変更し、処理待ち状態を解除する。
 		/// </remarks>
 		public void EnterPressed()
 		{
-			if(state != State.STARTED){
-				state = State.END;
+			if(state != State.Started)
+			{
+				state = State.End;
 				sendSignal.Set();
 			}
 		}

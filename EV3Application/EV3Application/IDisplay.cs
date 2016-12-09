@@ -16,7 +16,7 @@ namespace EV3Application.LCD
 		/// 画面に表示する。
 		/// </summary>
 		/// <exception cref="System.InvalidOperationException">
-		/// ディスプレイが画面に表示できない場合に例外を出す
+		/// ディスプレイが画面に表示できない場合に例外を出す。
 		/// </exception>
 		void Show();
 	}
