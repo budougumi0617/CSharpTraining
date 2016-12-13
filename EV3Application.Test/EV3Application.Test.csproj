@@ -59,5 +59,9 @@
       <Project>{3D037A16-1E22-4241-B8F4-894BD16EB528}</Project>
       <Name>MonoBrickFirmwareWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonoBrickFirmwareWrapper\monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj">
+      <Project>{67261E03-D263-4C42-A5AD-2A4820231B28}</Project>
+      <Name>MonoBrickFirmware</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

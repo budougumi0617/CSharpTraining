@@ -117,7 +117,6 @@ namespace EV3Application.LCD
 		/// </remarks>
 		private void showInfoDialog()
 		{
-
 			currentDisplay = new InfoDialog("Please Push The EnterButton");
 			try
 			{
@@ -139,7 +138,6 @@ namespace EV3Application.LCD
 		/// </remarks>
 		private void showAlphanumericDisplay()
 		{
-
 			try
 			{
 				currentDisplay.Show();
