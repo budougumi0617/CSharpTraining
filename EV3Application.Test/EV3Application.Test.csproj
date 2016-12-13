@@ -44,6 +44,7 @@
     <Compile Include="AlphanumericDisplayBaseTest.cs" />
     <Compile Include="LCDControllerTest.cs" />
     <Compile Include="InfoDialogTest.cs" />
+    <Compile Include="AlphanumericDisplayTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
