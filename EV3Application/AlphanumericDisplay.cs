@@ -2,6 +2,7 @@
 using MonoBrickFirmware;
 using MonoBrickFirmware.Display.Dialogs;
 using MonoBrickFirmware.Display;
+using MonoBrickFirmwareWrapper;
 
 namespace EV3Application.LCD
 {
@@ -10,8 +11,8 @@ namespace EV3Application.LCD
 	/// </summary>
 	public class AlphanumericDisplay : AlphanumericDisplayBase
 	{
-		private int height = 50; //画面上のy座標
-		private int width = 53; //画面上のx座標
+		private int width = 50; //画面上のx座標
+		private int height = 53; //画面上のy座標
 		private Font font = Font.MediumFont; //表示する文字のフォントサイズ
 
 		/// <summary>
@@ -35,10 +36,14 @@ namespace EV3Application.LCD
 			{
 				throw new InvalidOperationException();
 			}
-
+			MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear();
+			MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction(font,new Point(width, height), Message, true);
+			MonoBrickFirmwareWrapper.Display.LcdWrapper.Update(0);
+			/*
 			Lcd.Clear();
-			Lcd.WriteText(font, new Point(height, width), Message, true);
+			Lcd.WriteText(font, new Point(width, height), Message, true);
 			Lcd.Update();
+			*/
 		}
 	}
 }
