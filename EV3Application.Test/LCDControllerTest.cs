@@ -13,6 +13,7 @@ namespace EV3Application.Test
 	{
 		private FieldInfo stateInfo;//<see cref="EV3Application.LCDController.state"/>の情報
 		private FieldInfo sendSignalInfo;//<see cref="EV3Application.LCDController.sendSignal"/>の情報
+		private FieldInfo currentDisplayInfo;//<see cref="EV3Application.LCDController.currentDisplay"/>の情報
 		private MethodInfo showInfoDialogInfo;//<see cref="EV3Application.LCDController.showInfoDialog"/>の情報
 		private MethodInfo showAlphanumericInfo;//<see cref="EV3Application.LCDController.showAlphanumericDisplay"/>の情報
 		private FieldInfo writeTextInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.writeText"/>の情報
@@ -22,12 +23,12 @@ namespace EV3Application.Test
 		private Action<int> originalUpdate;//元のメソッドを退避させるためのメソッド
 		private Action originalClear;//元のメソッドを退避させるためのメソッド
 
-
 		[TestFixtureSetUp]
 		public void InitializeTest()
 		{
 			stateInfo = (typeof(LCD.LCDController)).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
 			sendSignalInfo = (typeof(LCD.LCDController)).GetField("sendSignal", BindingFlags.NonPublic | BindingFlags.Instance);
+			currentDisplayInfo = (typeof(LCD.LCDController)).GetField("currentDisplay", BindingFlags.NonPublic | BindingFlags.Instance);
 			showInfoDialogInfo = (typeof(LCD.LCDController)).GetMethod("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
 			showAlphanumericInfo = (typeof(LCD.LCDController)).GetMethod("showAlphanumericDisplay", BindingFlags.NonPublic | BindingFlags.Instance);
 			writeTextInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("writeText", BindingFlags.NonPublic | BindingFlags.Static);
@@ -131,10 +132,9 @@ namespace EV3Application.Test
 		public void ControlLCDTest004()
 		{
 			//オリジナルメソッドを退避
-			//originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
-			//originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
-			//originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
-
+			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
+			originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
+			originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
 			stateInfo.SetValue (controller, LCD.LCDController.State.ClosedInfoDialog);
@@ -150,6 +150,7 @@ namespace EV3Application.Test
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
 			stateInfo.SetValue (controller, LCD.LCDController.State.ClearedTextHello);
 			//実行
 			controller.ControlLCD();
@@ -166,8 +167,9 @@ namespace EV3Application.Test
 			originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
 			stateInfo.SetValue (controller, LCD.LCDController.State.ClearedTextHello);
-			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
+			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)MyWriteText);
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
 			//実行、確認
@@ -181,10 +183,8 @@ namespace EV3Application.Test
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
 			FieldInfo stateInfo = (typeof(LCD.LCDController)).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
 			stateInfo.SetValue (controller, LCD.LCDController.State.End);
-			//実行
+			//実行、確認
 			controller.ControlLCD();
-			//確認
-
 		}
 
 		//showInfoDialogのテスト
@@ -203,9 +203,72 @@ namespace EV3Application.Test
 		//showAlphanumericDisplayのテスト
 		//LCD画面上に文字列を表示する。
 
+		[Test, Description("文字列を表示したか確認する")]
+		public void ShowAlphanumericDisplayTest001()
+		{
+			//オリジナルメソッドを退避
+			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
+			originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
+			originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
+			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
+			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
+			clearInfo.SetValue (null, (Action)this.MyClear);
+			//実行、確認
+			showAlphanumericInfo.Invoke(controller, new Object[0]);
+		}
 
+		[Test, Description("文字列を5秒間表示したか確認する")]
+		public void ShowAlphanumericDisplayTest002()
+		{
+			//オリジナルメソッドを退避
+			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
+			originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
+			originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
+			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
+			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
+			clearInfo.SetValue (null, (Action)this.MyClear);
+			//実行
+			DateTime before = DateTime.Now;
+			showAlphanumericInfo.Invoke(controller, new Object[0]);
+			DateTime after = DateTime.Now;
+			//確認
+			Console.WriteLine ("{0} sec", (after.Second - before.Second));
+		}
 
-		//Test用メソッド
+		//EnterPressedのテスト
+		//EnterButtonが押下された際の処理を実行する。
+
+		[Test, Description("StateがStartedのとき何もしないか")]
+		public void EnterPressedTest001()
+		{
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			stateInfo.SetValue (controller, LCD.LCDController.State.Started);
+			//実行
+			controller.EnterPressed ();
+			//確認
+			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
+		}
+
+		[Test, Description("StateがStartedではないときstateをEndにするか")]
+		public void EnterPressedTest002()
+		{
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			stateInfo.SetValue (controller, LCD.LCDController.State.ClosedInfoDialog);
+			//実行
+			controller.EnterPressed ();
+			//確認
+			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
+		}
+
+		//AlphanumericDisplay表示テスト用メソッド
 
 		public void MyWriteText(MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color)
 		{
