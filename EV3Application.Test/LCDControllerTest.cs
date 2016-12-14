@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Moq;
 using MonoBrickFirmware;
 using MonoBrickFirmwareWrapper;
 using EV3Application;
@@ -196,7 +197,7 @@ namespace EV3Application.Test
 			//準備
 			LCD.LCDController controller = new LCD.LCDController(new ManualResetEvent(false));
 			MethodInfo showDialogInfo = (typeof(LCD.LCDController)).GetMethod ("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
-
+			Mock<MonoBrickFirmware.Display.Dialogs.InfoDialog> iMock = new Mock<MonoBrickFirmware.Display.Dialogs.InfoDialog>();
 
 		}
 
