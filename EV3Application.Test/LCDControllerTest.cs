@@ -96,7 +96,7 @@ namespace EV3Application.Test
 		//ControllLCDのテスト
 		//<see cref="state"/>を参照して、LCD画面をコントロールする。
 
-		[Test, Description("stateがStartedからClosedInfoDialogに変更されているか確認する")]
+		[Test, Description("処理が終了した時、stateがStartedからEndに変更されているか確認する")]
 		public void ControlLCDTest001()
 		{
 			//準備
@@ -104,33 +104,22 @@ namespace EV3Application.Test
 			//実行
 			controller.ControlLCD();
 			//確認
-			Assert.AreEqual(LCD.LCDController.State.ClosedInfoDialog, stateInfo.GetValue(controller));
+			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("InfoDialogを表示したか確認する")]
+		[Test, Description("stateがStartedの時、InfoDialog、Hello、Good Byeを表示したか確認する")]
 		public void ControlLCDTest002()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			//実行
-			controller.ControlLCD();
-
+			//実行、確認
+			Assert.DoesNotThrow(
+				() => controller.ControlLCD()
+			);
 		}
 
-		[Test, Description("stateがClosedInfoDialogからClearedTextHelloに変更されているか確認する")]
+		[Test, Description("stateがClosedInfoDialogの時、Hello、GoodByeを表示したか確認する")]
 		public void ControlLCDTest003()
-		{
-			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			stateInfo.SetValue (controller, LCD.LCDController.State.ClosedInfoDialog);
-			//実行
-			controller.ControlLCD();
-			//確認
-			Assert.AreEqual(LCD.LCDController.State.ClearedTextHello, stateInfo.GetValue(controller));
-		}
-
-		[Test, Description("Helloを表示したか確認する")]
-		public void ControlLCDTest004()
 		{
 			//オリジナルメソッドを退避
 			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
@@ -143,24 +132,13 @@ namespace EV3Application.Test
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
 			//実行、確認
-			controller.ControlLCD();
+			Assert.DoesNotThrow (
+				() => controller.ControlLCD ()
+			);
 		}
 
-		[Test, Description("stateがClearedTextHelloからEndに変更されているか確認する")]
-		public void ControlLCDTest005()
-		{
-			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
-			stateInfo.SetValue (controller, LCD.LCDController.State.ClearedTextHello);
-			//実行
-			controller.ControlLCD();
-			//確認
-			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
-		}
-
-		[Test, Description("Good Byeを表示したか確認する")]
-		public void ControlLCDTest006()
+		[Test, Description("stateがClearedTextHelloの時、Good Byeを表示したか確認する")]
+		public void ControlLCDTest004()
 		{
 			//オリジナルメソッドを退避
 			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
@@ -174,18 +152,9 @@ namespace EV3Application.Test
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
 			//実行、確認
-			controller.ControlLCD();
-		}
-
-		[Test, Description("stateがEndの場合に処理が実行されないことを確認する")]
-		public void ControlLCDTest007()
-		{
-			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			FieldInfo stateInfo = (typeof(LCD.LCDController)).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
-			stateInfo.SetValue (controller, LCD.LCDController.State.End);
-			//実行、確認
-			controller.ControlLCD();
+			Assert.DoesNotThrow (
+				() => controller.ControlLCD ()
+			);
 		}
 
 		//showInfoDialogのテスト
@@ -197,7 +166,6 @@ namespace EV3Application.Test
 			//準備
 			LCD.LCDController controller = new LCD.LCDController(new ManualResetEvent(false));
 			MethodInfo showDialogInfo = (typeof(LCD.LCDController)).GetMethod ("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
-			Mock<MonoBrickFirmware.Display.Dialogs.InfoDialog> iMock = new Mock<MonoBrickFirmware.Display.Dialogs.InfoDialog>();
 
 		}
 
@@ -218,10 +186,12 @@ namespace EV3Application.Test
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
 			//実行、確認
-			showAlphanumericInfo.Invoke(controller, new Object[0]);
+			Assert.DoesNotThrow(
+				() => showAlphanumericInfo.Invoke(controller, new Object[0])
+			);
 		}
 
-		[Test, Description("文字列を5秒間表示したか確認する")]
+		[Test, Description("文字列を5秒間(誤差が1秒未満)表示したか確認する")]
 		public void ShowAlphanumericDisplayTest002()
 		{
 			//オリジナルメソッドを退避
@@ -239,7 +209,9 @@ namespace EV3Application.Test
 			showAlphanumericInfo.Invoke(controller, new Object[0]);
 			DateTime after = DateTime.Now;
 			//確認
-			Console.WriteLine ("{0} sec", (after.Second - before.Second));
+			TimeSpan expected = new TimeSpan(0,0,0,0,5000);
+			TimeSpan actual = after - before;
+			Assert.IsTrue (1000 > Math.Abs((actual - expected).TotalMilliseconds));
 		}
 
 		//EnterPressedのテスト

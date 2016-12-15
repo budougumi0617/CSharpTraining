@@ -49,7 +49,9 @@ namespace EV3Application.Test
 			updateInfo.SetValue (null, (Action<int>)lcdControllerTest.MyUpdate);
 			clearInfo.SetValue (null, (Action)lcdControllerTest.MyClear);
 			//実行、確認
-			alphanumericDisplay.Show();
+			Assert.DoesNotThrow(
+				() => alphanumericDisplay.Show()
+			);
 		}
 
 		[Test, Description("Messageに半角英数字スペース以外がSetされているときにExceptionがthrowされるか")]
