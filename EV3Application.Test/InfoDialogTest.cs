@@ -4,13 +4,13 @@ using EV3Application;
 
 namespace EV3Application.Test
 {
+	/// <summary>
+	/// <see cref="EV3Application.LCD.InfoDialog"/>のテストクラス。
+	/// </summary>
 	[TestFixture]
 	public class InfoDialogTest
 	{
-		//InfoDialogのテスト
-		//表示するダイアログのメッセージを初期化し、インスタンスを生成する。
-
-		[Test, Description("Messageが初期化されるか")]
+		[Test, Description("Messageが初期化されるか確認する"), Category("InfoDialog")]
 		public void InfoDIalogTest001()
 		{
 			string expected = "Test";
@@ -20,7 +20,7 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual); 
 		}
 
-		[Test, Description("InfoDialogクラスのコンストラクタが生成されるか")]
+		[Test, Description("InfoDialogクラスのコンストラクタが生成されるか確認する"), Category("InfoDialog")]
 		public void InfoDIalogTest002()
 		{
 			LCD.InfoDialog infoDialog = new LCD.InfoDialog ("Test");
@@ -41,7 +41,7 @@ namespace EV3Application.Test
 
 		}
 	*/
-		[Test, Description("Messageに半角英数字スペース以外がSetされているときにExceptionがthrowされるか")]
+		[Test, Description("Messageに半角英数字スペース以外がSetされているときにExceptionがthrowされるか確認する"), Category("Show")]
 		public void ShowTest002()
 		{
 			LCD.InfoDialog infoDialog = new LCD.InfoDialog ("fdui (#) % 6");

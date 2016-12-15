@@ -9,14 +9,17 @@ using System.Threading;
 
 namespace EV3Application.Test
 {
+	/// <summary>
+	/// <see cref="EV3Application.LCD.LCDController"/>のテストクラス。
+	/// </summary>
 	[TestFixture]
 	public class LCDControllerTest
 	{
-		private FieldInfo stateInfo;//<see cref="EV3Application.LCDController.state"/>の情報
-		private FieldInfo sendSignalInfo;//<see cref="EV3Application.LCDController.sendSignal"/>の情報
-		private FieldInfo currentDisplayInfo;//<see cref="EV3Application.LCDController.currentDisplay"/>の情報
-		private MethodInfo showInfoDialogInfo;//<see cref="EV3Application.LCDController.showInfoDialog"/>の情報
-		private MethodInfo showAlphanumericInfo;//<see cref="EV3Application.LCDController.showAlphanumericDisplay"/>の情報
+		private FieldInfo stateInfo;//<see cref="EV3Application.LCD.LCDController.state"/>の情報
+		private FieldInfo sendSignalInfo;//<see cref="EV3Application.LCD.LCDController.sendSignal"/>の情報
+		private FieldInfo currentDisplayInfo;//<see cref="EV3Application.LCD.LCDController.currentDisplay"/>の情報
+		private MethodInfo showInfoDialogInfo;//<see cref="EV3Application.LCD.LCDController.showInfoDialog"/>の情報
+		private MethodInfo showAlphanumericInfo;//<see cref="EV3Application.LCD.LCDController.showAlphanumericDisplay"/>の情報
 		private FieldInfo writeTextInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.writeText"/>の情報
 		private FieldInfo updateInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.update"/>の情報
 		private FieldInfo clearInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.clear"/>の情報
@@ -65,7 +68,7 @@ namespace EV3Application.Test
 			}
 		}
 
-		[Test, Description("フィールドstateが初期化されているか")]
+		[Test, Description("フィールドstateが初期化されているか"), Category("LCDController")]
 		public void LCDControllerTest001()
 		{
 			//準備
@@ -74,7 +77,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("フィールドsendSignalが初期化されているか")]
+		[Test, Description("フィールドsendSignalが初期化されているか"), Category("LCDController")]
 		public void LCDControllerTest002()
 		{
 			//準備
@@ -84,7 +87,7 @@ namespace EV3Application.Test
 			Assert.AreSame(mre, sendSignalInfo.GetValue(controller));
 		}
 
-		[Test, Description("インスタンスが生成されるか")]
+		[Test, Description("インスタンスが生成されるか"), Category("LCDController")]
 		public void LCDControllerTest003()
 		{
 			//準備
@@ -93,10 +96,7 @@ namespace EV3Application.Test
 			Assert.IsNotNull(controller);
 		}
 
-		//ControllLCDのテスト
-		//<see cref="state"/>を参照して、LCD画面をコントロールする。
-
-		[Test, Description("処理が終了した時、stateがStartedからEndに変更されているか確認する")]
+		[Test, Description("処理が終了した時、stateがStartedからEndに変更されているか確認する"), Category("ControllLCD")]
 		public void ControlLCDTest001()
 		{
 			//準備
@@ -107,7 +107,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("stateがStartedの時、InfoDialog、Hello、Good Byeを表示したか確認する")]
+		[Test, Description("stateがStartedの時、InfoDialog、Hello、Good Byeを表示したか確認する"), Category("ControllLCD")]
 		public void ControlLCDTest002()
 		{
 			//準備
@@ -118,7 +118,7 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("stateがClosedInfoDialogの時、Hello、GoodByeを表示したか確認する")]
+		[Test, Description("stateがClosedInfoDialogの時、Hello、GoodByeを表示したか確認する"), Category("ControllLCD")]
 		public void ControlLCDTest003()
 		{
 			//オリジナルメソッドを退避
@@ -137,7 +137,7 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("stateがClearedTextHelloの時、Good Byeを表示したか確認する")]
+		[Test, Description("stateがClearedTextHelloの時、Good Byeを表示したか確認する"), Category("ControllLCD")]
 		public void ControlLCDTest004()
 		{
 			//オリジナルメソッドを退避
@@ -157,10 +157,7 @@ namespace EV3Application.Test
 			);
 		}
 
-		//showInfoDialogのテスト
-		//LCD画面上に<c>InfoDialog</c>を表示する。
-
-		[Test, Description("InfoDialogを表示したか確認する")]
+		[Test, Description("InfoDialogを表示したか確認する"), Category("showInfoDialog")]
 		public void ShowInfoDialogTest001()
 		{
 			//準備
@@ -169,10 +166,7 @@ namespace EV3Application.Test
 
 		}
 
-		//showAlphanumericDisplayのテスト
-		//LCD画面上に文字列を表示する。
-
-		[Test, Description("文字列を表示したか確認する")]
+		[Test, Description("文字列を表示したか確認する"), Category("showAlphanumericDisplay")]
 		public void ShowAlphanumericDisplayTest001()
 		{
 			//オリジナルメソッドを退避
@@ -191,7 +185,7 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("文字列を5秒間(誤差が1秒未満)表示したか確認する")]
+		[Test, Description("文字列を5秒間(誤差が1秒未満)表示したか確認する"), Category("showAlphanumericDisplay")]
 		public void ShowAlphanumericDisplayTest002()
 		{
 			//オリジナルメソッドを退避
@@ -214,10 +208,7 @@ namespace EV3Application.Test
 			Assert.IsTrue (1000 > Math.Abs((actual - expected).TotalMilliseconds));
 		}
 
-		//EnterPressedのテスト
-		//EnterButtonが押下された際の処理を実行する。
-
-		[Test, Description("StateがStartedのとき何もしないか")]
+		[Test, Description("StateがStartedのとき何もしないか"),Category("EnterPressed")]
 		public void EnterPressedTest001()
 		{
 			//準備
@@ -229,7 +220,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("StateがStartedではないときstateをEndにするか")]
+		[Test, Description("StateがStartedではないときstateをEndにするか"),Category("EnterPressed")]
 		public void EnterPressedTest002()
 		{
 			//準備

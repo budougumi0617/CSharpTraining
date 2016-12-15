@@ -4,13 +4,13 @@ using EV3Application;
 
 namespace EV3Application.Tests
 {
+	/// <summary>
+	/// <see cref="EV3Application.LCD.AlphanumericDisplayBase"/>のテストクラス。
+	/// </summary>
 	[TestFixture]
 	public class AlphanumericDisplayBaseTest
 	{
-		//Messageのテスト
-		//画面に表示するメッセージ。
-
-		[Test, Description("Messageに指定文字列がSetされるか")]
+		[Test, Description("Messageに指定文字列がSetされるか確認する"), Category("Message")]
 		public void  MessageTest001()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -20,7 +20,7 @@ namespace EV3Application.Tests
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("MessageからSetされた文字列がGetできるか")]
+		[Test, Description("MessageからSetされた文字列がGetできるか確認する"), Category("Message")]
 		public void  MessageTest002()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -33,7 +33,7 @@ namespace EV3Application.Tests
 		//isAlphanumericのテスト
 		//メッセージが半角英数字スペースのみかどうかを判定する。
 
-		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか")]
+		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("isAlphanumeric")]
 		public void  IsAlphanumericTest001()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -43,7 +43,7 @@ namespace EV3Application.Tests
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか")]
+		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか確認する"), Category("isAlphanumeric")]
 		public void  IsAlphanumericTest002()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -53,7 +53,7 @@ namespace EV3Application.Tests
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか")]
+		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか確認する"), Category("isAlphanumeric")]
 		public void  IsAlphanumericTest003()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -63,7 +63,7 @@ namespace EV3Application.Tests
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("Messageが空文字の時にfalseを返すか")]
+		[Test, Description("Messageが空文字の時にfalseを返すか確認する"), Category("isAlphanumeric")]
 		public void  IsAlphanumericTest004()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -73,7 +73,7 @@ namespace EV3Application.Tests
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("Messageがnullの時にfalseを返すか")]
+		[Test, Description("Messageがnullの時にfalseを返すか確認する"), Category("isAlphanumeric")]
 		public void  IsAlphanumericTest005()
 		{
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();

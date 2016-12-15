@@ -5,13 +5,13 @@ using EV3Application;
 
 namespace EV3Application.Test
 {
+	/// <summary>
+	///<see cref="EV3Application.LCD.AlphanumericDisplay"/>のテストクラス。
+	/// </summary>
 	[TestFixture]
 	public class AlphanumericDisplayTest
 	{
-		//AlphanumericDisplayのテスト
-		//表示するダイアログのメッセージを初期化し、インスタンスを生成する。
-
-		[Test, Description("Messageが初期化されるか")]
+		[Test, Description("Messageが初期化されるか確認する"), Category("AlphanumericDisplay")]
 		public void AlphanumericDisplayTest001()
 		{
 			//準備
@@ -23,7 +23,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(expected, actual); 
 		}
 
-		[Test, Description("AlphanumericDisplayクラスのコンストラクタが生成されるか")]
+		[Test, Description("AlphanumericDisplayクラスのコンストラクタが生成されるか確認する"), Category("AlphanumericDisplay")]
 		public void AlphanumericDisplayTest002()
 		{
 			//実行
@@ -32,11 +32,7 @@ namespace EV3Application.Test
 			Assert.IsNotNull (alphanumericDisplay);
 		}
 
-		//Showのテスト
-		//画面に半角英数字スペースの文字列を表示する。
-		//表示するMessageが半角英数字スペース以外を含むときに例外(InvalidOperationException)を出す。
-
-		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか")]
+		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか確認する"), Category("Show")]
 		public void ShowTest001()
 		{
 			//準備
@@ -54,7 +50,7 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("Messageに半角英数字スペース以外がSetされているときにExceptionがthrowされるか")]
+		[Test, Description("Messageに半角英数字スペース以外がSetされているときにExceptionがthrowされるか確認する"), Category("Show")]
 		public void ShowTest002()
 		{
 			//準備
