@@ -28,7 +28,7 @@ namespace EV3Application.Test
 			Assert.IsNotNull (infoDialog);
 		}
 		/*
-		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか"), Category("Show")]
+		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか確認する"), Category("Show")]
 		public void ShowTest001()
 		{
 			LCD.InfoDialog infoDialog = new LCD.InfoDialog ("abcde");
