@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectTypeGuids>{803879AC-26C2-49B0-AAA0-0DE4A7C68C87};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{ED80024D-7BB4-4910-B6DC-895136884A46}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>EV3Application</RootNamespace>
@@ -19,6 +18,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -28,6 +28,17 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,13 +55,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\MonoBrickFirmwareWrapper\monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj">
-      <Project>{67261E03-D263-4C42-A5AD-2A4820231B28}</Project>
-      <Name>MonoBrickFirmware</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MonoBrickFirmwareWrapper\MonoBrickFirmwareWrapper\MonoBrickFirmwareWrapper.csproj">
       <Project>{3D037A16-1E22-4241-B8F4-894BD16EB528}</Project>
       <Name>MonoBrickFirmwareWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoBrickFirmwareWrapper\monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj">
+      <Project>{67261E03-D263-4C42-A5AD-2A4820231B28}</Project>
+      <Name>MonoBrickFirmware</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
