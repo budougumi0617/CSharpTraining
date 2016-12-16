@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoBrickFirmwareWrapper", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitSample.Tests", "NUnitSample.Tests\NUnitSample.Tests.csproj", "{61A47C0C-DD75-4ABA-A578-D07319BBE9D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EV3Application", "EV3Application\EV3Application.csproj", "{ED80024D-7BB4-4910-B6DC-895136884A46}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{54AAC3A0-37EC-48AF-A84E-68D6661083BA}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -26,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{54AAC3
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EV3Application.Test", "EV3Application.Test\EV3Application.Test.csproj", "{FF0B4E30-5F32-48A9-ACCF-131E37134049}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EV3Application", "EV3Application\EV3Application.csproj", "{ED80024D-7BB4-4910-B6DC-895136884A46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
