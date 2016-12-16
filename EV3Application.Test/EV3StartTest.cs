@@ -10,7 +10,8 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class EV3StartTest
 	{
-		/*[Test, Description("ControlEV3が呼び出し、アプリケーションが開始できているか確認する"), Category("Main")]
+		/*
+		[Test, Description("ControlEV3が呼び出し、アプリケーションが開始できているか確認する"), Category("Main")]
 		public void MainTest001()
 		{
 			//実施、確認

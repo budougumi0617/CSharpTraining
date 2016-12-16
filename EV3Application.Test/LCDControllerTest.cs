@@ -27,7 +27,7 @@ namespace EV3Application.Test
 		private Action<int> originalUpdate;//元のメソッドを退避させるためのメソッド
 		private Action originalClear;//元のメソッドを退避させるためのメソッド
 
-		[TestFixtureSetUp]
+		[TestFixtureSetUp, Description("リフレクションによって、テスト対象メンバの情報をフィールドに代入する")]
 		public void InitializeTest()
 		{
 			stateInfo = (typeof(LCD.LCDController)).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -40,7 +40,7 @@ namespace EV3Application.Test
 			clearInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("clear", BindingFlags.NonPublic | BindingFlags.Static);
 		}
 
-		[SetUp]
+		[SetUp, Description("オリジナルメソッド格納用の変数を初期化する")]
 		public void SetUpTest()
 		{
 			originalWriteText = null;
@@ -48,7 +48,7 @@ namespace EV3Application.Test
 			originalClear = null;
 		}
 
-		[TearDown]
+		[TearDown, Description("退避させていたメソッドを戻す")]
 		public void TearDown()
 		{
 			if (originalWriteText != null)
@@ -156,7 +156,7 @@ namespace EV3Application.Test
 				() => controller.ControlLCD ()
 			);
 		}
-
+		/*
 		[Test, Description("InfoDialogを表示したか確認する"), Category("showInfoDialog")]
 		public void ShowInfoDialogTest001()
 		{
@@ -165,7 +165,7 @@ namespace EV3Application.Test
 			MethodInfo showDialogInfo = (typeof(LCD.LCDController)).GetMethod ("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
 
 		}
-
+		*/
 		[Test, Description("文字列を表示したか確認する"), Category("showAlphanumericDisplay")]
 		public void ShowAlphanumericDisplayTest001()
 		{
@@ -198,17 +198,17 @@ namespace EV3Application.Test
 			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
+			TimeSpan expected = new TimeSpan(0,0,0,0,5000);//予想表示時間(5秒)
 			//実行
-			DateTime before = DateTime.Now;
+			DateTime before = DateTime.Now;//メソッド呼び出し前の時刻
 			showAlphanumericInfo.Invoke(controller, new Object[0]);
-			DateTime after = DateTime.Now;
-			//確認
-			TimeSpan expected = new TimeSpan(0,0,0,0,5000);
+			DateTime after = DateTime.Now;//メソッド呼出し後の時刻
 			TimeSpan actual = after - before;
+			//確認
 			Assert.IsTrue (1000 > Math.Abs((actual - expected).TotalMilliseconds));
 		}
 
-		[Test, Description("StateがStartedのとき何もしないか"),Category("EnterPressed")]
+		[Test, Description("StateがStartedのとき何もせず、stateが変更されないか確認する"),Category("EnterPressed")]
 		public void EnterPressedTest001()
 		{
 			//準備
@@ -220,7 +220,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("StateがStartedではないときstateをEndにするか"),Category("EnterPressed")]
+		[Test, Description("StateがStartedではないときstateをEndに変更するか確認する"),Category("EnterPressed")]
 		public void EnterPressedTest002()
 		{
 			//準備
@@ -234,16 +234,30 @@ namespace EV3Application.Test
 
 		//AlphanumericDisplay表示テスト用メソッド
 
+		/// <summary>
+		/// <see cref="MonoBrickFirmware.Display.Lcd.WriteText"/>の代わりに置き換えるメソッド。
+		/// </summary>
+		/// <param name="font">表示する文字のフォントサイズ</param>
+		/// <param name="point">画面の座標</param>
+		/// <param name="message">表示メッセージ</param>
+		/// <param name="color">表示文字色、<c>true</c>なら黒、<c>false</c>なら白で表示する</param>
 		public void MyWriteText(MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color)
 		{
 			System.Console.WriteLine("MyWriteText is called, and message is " + message);
 		}
 
+		/// <summary>
+		/// <see cref="MonoBrickFirmware.Display.Lcd.Update"/>の代わりに置き換えるメソッド。
+		/// </summary>
+		/// <param name="yOffset">y座標のオフセット</param>
 		public void MyUpdate(int  yOffset = 0)
 		{
 			System.Console.WriteLine("MyUpdate is called");
 		}
 
+		/// <summary>
+		/// <see cref="MonoBrickFirmware.Display.Lcd.Clear"/>の代わりに置き換えるメソッド。
+		/// </summary>
 		public void MyClear()
 		{
 			System.Console.WriteLine ("MyClear is called");

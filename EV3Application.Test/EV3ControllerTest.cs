@@ -10,7 +10,8 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class EV3ControllerTest
 	{
-		/*[Test, Description("ControlLCDを呼び出し、機能が実現できているか"), Category("ControlEV3")]
+		/*
+		[Test, Description("ControlLCDを呼び出し、機能が実現できているか"), Category("ControlEV3")]
 		public void ControlEV3Test001()
 		{
 			//準備
