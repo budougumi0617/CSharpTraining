@@ -25,7 +25,7 @@ test_script:
 
     $opencover = (Resolve-Path ".\packages\OpenCover.*\tools\OpenCover.Console.exe").ToString()
 
-    $targetargs = """$((Resolve-Path "$tests_dll_dir\*.Tests.dll").ToString())""　""$((Resolve-Path "$test_dll_dir\*.Test.dll").ToString())"" -noshadow"
+    $targetargs = """$((Resolve-Path "$tests_dll_dir\*.Tests.dll").ToString())"" ""$((Resolve-Path "$test_dll_dir\*.Test.dll").ToString())"" -noshadow"
 
     $filter = "+[CSharpTraining*]* +[EV3Application*]* -[*.Tests*]* -[*.Test*]*"
 
