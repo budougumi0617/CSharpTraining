@@ -30,9 +30,6 @@ namespace EV3Application.Tests
 			Assert.AreEqual (expected, actual);
 		}
 
-		//isAlphanumericのテスト
-		//メッセージが半角英数字スペースのみかどうかを判定する。
-
 		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("isAlphanumeric")]
 		public void  IsAlphanumericTest001()
 		{
