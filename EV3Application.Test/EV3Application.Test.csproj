@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF0B4E30-5F32-48A9-ACCF-131E37134049}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>EV3Application.Test</RootNamespace>
+    <AssemblyName>EV3Application.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlphanumericDisplayBaseWrapper.cs" />
+    <Compile Include="AlphanumericDisplayBaseTest.cs" />
+    <Compile Include="LCDControllerTest.cs" />
+    <Compile Include="InfoDialogTest.cs" />
+    <Compile Include="AlphanumericDisplayTest.cs" />
+    <Compile Include="EV3ControllerTest.cs" />
+    <Compile Include="EV3StartTest.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EV3Application\EV3Application.csproj">
+      <Project>{ED80024D-7BB4-4910-B6DC-895136884A46}</Project>
+      <Name>EV3Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoBrickFirmwareWrapper\MonoBrickFirmwareWrapper\MonoBrickFirmwareWrapper.csproj">
+      <Project>{3D037A16-1E22-4241-B8F4-894BD16EB528}</Project>
+      <Name>MonoBrickFirmwareWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonoBrickFirmwareWrapper\monoev3\MonoBrickFirmware\MonoBrickFirmware.csproj">
+      <Project>{67261E03-D263-4C42-A5AD-2A4820231B28}</Project>
+      <Name>MonoBrickFirmware</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

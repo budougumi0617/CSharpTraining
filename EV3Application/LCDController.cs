@@ -77,7 +77,8 @@ namespace EV3Application.LCD
 				{
 
 				case State.Started:
-					showInfoDialog();
+					showInfoDialog ();
+					state = State.ClosedInfoDialog;
 					break;
 
 				case State.ClosedInfoDialog:
@@ -111,17 +112,15 @@ namespace EV3Application.LCD
 		/// </summary>
 		/// <remarks>
 		/// ユーザー入力があるまでこのメソッドから戻らない。</br>
-		/// エラーが発生しなければ、InfoDialog表示後に<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.ClosedInfoDialog"/>に変更する。</br>
+		/// エラーが発生しなければ、InfoDialog表示する。</br>
 		/// エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。
 		/// </remarks>
 		private void showInfoDialog()
 		{
-
 			currentDisplay = new InfoDialog("Please Push The EnterButton");
 			try
 			{
 				currentDisplay.Show();
-				state = State.ClosedInfoDialog;
 			}
 			catch(Exception e)
 			{
@@ -139,7 +138,6 @@ namespace EV3Application.LCD
 		/// </remarks>
 		private void showAlphanumericDisplay()
 		{
-
 			try
 			{
 				currentDisplay.Show();

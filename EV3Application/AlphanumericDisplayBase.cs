@@ -30,6 +30,10 @@ namespace EV3Application.LCD
 		/// </returns>
 		protected bool isAlphanumeric()
 		{
+			if(Message == null)
+			{
+				return false;
+			}
 			return Regex.IsMatch(Message,"^[a-zA-Z0-9\\s]+$");
 		}
 	}
