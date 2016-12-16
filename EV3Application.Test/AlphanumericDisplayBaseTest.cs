@@ -2,7 +2,7 @@
 using System;
 using EV3Application;
 
-namespace EV3Application.Tests
+namespace EV3Application.Test
 {
 	/// <summary>
 	/// <see cref="EV3Application.LCD.AlphanumericDisplayBase"/>のテストクラス。

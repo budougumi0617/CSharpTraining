@@ -1,7 +1,7 @@
 ﻿using System;
 using EV3Application.LCD;
 
-namespace EV3Application.Tests
+namespace EV3Application.Test
 {
 	/// <summary>
 	/// <see cref="EV3Application.LCD.AlphanumericDisplayBase"/>のラッパークラス。
