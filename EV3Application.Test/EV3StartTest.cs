@@ -11,8 +11,8 @@ namespace EV3Application.Test
 	public class EV3StartTest
 	{
 		/*
-		[Test, Description("ControlEV3が呼び出し、アプリケーションが開始できているか確認する"), Category("Main")]
-		public void MainTest001()
+		[Test, Description("ControlEV3が呼び出し、アプリケーションが開始できているか確認する"), Category("normal")]
+		public void CallControlEV3Test()
 		{
 			//実施、確認
 			Assert.DoesNotThrow (

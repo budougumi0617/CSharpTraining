@@ -10,7 +10,7 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class AlphanumericDisplayBaseTest
 	{
-		[Test, Description("Messageに指定文字列のSet、Getを確認する"), Category("Message")]
+		[Test, Description("Messageに指定文字列のSet、Getを確認する"), Category("normal")]
 		public void  MessageAccessorTest()
 		{
 			//準備
@@ -23,7 +23,7 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("isAlphanumeric")]
+		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("normal")]
 		public void NormalAlphanumericSpaceTest()
 		{
 			//準備
@@ -36,7 +36,7 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか確認する"), Category("isAlphanumeric")]
+		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか確認する"), Category("abnormal")]
 		public void  MixedAlphanumericSpaceTest()
 		{
 			//準備
@@ -49,7 +49,7 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか確認する"), Category("isAlphanumeric")]
+		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか確認する"), Category("abnormal")]
 		public void AbnormalAlphanumericSpaceTest()
 		{
 			//準備
@@ -62,7 +62,7 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("Messageが空文字の時にfalseを返すか確認する"), Category("isAlphanumeric")]
+		[Test, Description("Messageが空文字の時にfalseを返すか確認する"), Category("abnormal")]
 		public void  EmptyAlphanumericSpaceTest()
 		{
 			//準備
@@ -75,7 +75,7 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("Messageがnullの時にfalseを返すか確認する"), Category("isAlphanumeric")]
+		[Test, Description("Messageがnullの時にfalseを返すか確認する"), Category("abnormal")]
 		public void  NullAlphanumericSpaceTest()
 		{
 			//準備

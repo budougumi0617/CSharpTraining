@@ -11,8 +11,8 @@ namespace EV3Application.Test
 	public class EV3ControllerTest
 	{
 		/*
-		[Test, Description("ControlLCDを呼び出し、機能が実現できているか"), Category("ControlEV3")]
-		public void ControlEV3Test001()
+		[Test, Description("ControlLCDを呼び出し、機能が実現できているか"), Category("normal")]
+		public void CallControlLcdTest()
 		{
 			//準備
 			EV3Controller controller = new EV3Controller();

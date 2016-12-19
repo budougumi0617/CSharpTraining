@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Moq;
 using MonoBrickFirmware;
 using MonoBrickFirmwareWrapper;
 using EV3Application;
@@ -28,7 +27,7 @@ namespace EV3Application.Test
 		private Action originalClear;//元のメソッドを退避させるためのメソッド
 
 		[TestFixtureSetUp, Description("リフレクションによって、テスト対象メンバの情報をフィールドに代入する")]
-		public void InitializeTest()
+		public void TestInitialiser()
 		{
 			stateInfo = (typeof(LCD.LCDController)).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
 			sendSignalInfo = (typeof(LCD.LCDController)).GetField("sendSignal", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -41,7 +40,7 @@ namespace EV3Application.Test
 		}
 
 		[SetUp, Description("オリジナルメソッド格納用の変数を初期化する")]
-		public void SetUpTest()
+		public void TestSetUp()
 		{
 			originalWriteText = null;
 			originalUpdate = null;
@@ -49,7 +48,7 @@ namespace EV3Application.Test
 		}
 
 		[TearDown, Description("退避させていたメソッドを戻す")]
-		public void TearDown()
+		public void TestTearDown()
 		{
 			if (originalWriteText != null)
 			{
@@ -68,8 +67,8 @@ namespace EV3Application.Test
 			}
 		}
 
-		[Test, Description("フィールドstateが初期化されているか"), Category("LCDController")]
-		public void LCDControllerTest001()
+		[Test, Description("フィールドstateが初期化されているか確認する"), Category("normal")]
+		public void InitialiseStateTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController(new ManualResetEvent (false));
@@ -77,8 +76,8 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("フィールドsendSignalが初期化されているか"), Category("LCDController")]
-		public void LCDControllerTest002()
+		[Test, Description("フィールドsendSignalが初期化されているか確認する"), Category("normal")]
+		public void InitialiseSendSignalTest()
 		{
 			//準備
 			ManualResetEvent mre = new ManualResetEvent (false);
@@ -87,8 +86,8 @@ namespace EV3Application.Test
 			Assert.AreSame(mre, sendSignalInfo.GetValue(controller));
 		}
 
-		[Test, Description("インスタンスが生成されるか"), Category("LCDController")]
-		public void LCDControllerTest003()
+		[Test, Description("LCDControllerクラスのインスタンスが生成されるか確認する"), Category("normal")]
+		public void InstanceConstructorTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController(new ManualResetEvent(false));
@@ -96,8 +95,8 @@ namespace EV3Application.Test
 			Assert.IsNotNull(controller);
 		}
 
-		[Test, Description("処理が終了した時、stateがStartedからEndに変更されているか確認する"), Category("ControllLCD")]
-		public void ControlLCDTest001()
+		[Test, Description("処理が終了した時、stateがStartedからEndに変更されているか確認する"), Category("normal")]
+		public void ChangedToEndTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
@@ -107,8 +106,8 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("stateがStartedの時、InfoDialog、Hello、Good Byeを表示したか確認する"), Category("ControllLCD")]
-		public void ControlLCDTest002()
+		[Test, Description("stateがStartedの時、InfoDialog、Hello、Good Byeを表示したか確認する"), Category("normal")]
+		public void ShowAllTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
@@ -118,8 +117,8 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("stateがClosedInfoDialogの時、Hello、GoodByeを表示したか確認する"), Category("ControllLCD")]
-		public void ControlLCDTest003()
+		[Test, Description("stateがClosedInfoDialogの時、Hello、GoodByeを表示したか確認する"), Category("normal")]
+		public void ShowHelloAndGoodByeTest()
 		{
 			//オリジナルメソッドを退避
 			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
@@ -137,8 +136,8 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("stateがClearedTextHelloの時、Good Byeを表示したか確認する"), Category("ControllLCD")]
-		public void ControlLCDTest004()
+		[Test, Description("stateがClearedTextHelloの時、Good Byeを表示したか確認する"), Category("normal")]
+		public void ShowGoodByeTest()
 		{
 			//オリジナルメソッドを退避
 			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
@@ -148,7 +147,7 @@ namespace EV3Application.Test
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
 			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
 			stateInfo.SetValue (controller, LCD.LCDController.State.ClearedTextHello);
-			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)MyWriteText);
+			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
 			//実行、確認
@@ -158,16 +157,15 @@ namespace EV3Application.Test
 		}
 		/*
 		[Test, Description("InfoDialogを表示したか確認する"), Category("showInfoDialog")]
-		public void ShowInfoDialogTest001()
+		public void ShowInfoDialogTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController(new ManualResetEvent(false));
 			MethodInfo showDialogInfo = (typeof(LCD.LCDController)).GetMethod ("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
-
 		}
 		*/
-		[Test, Description("文字列を表示したか確認する"), Category("showAlphanumericDisplay")]
-		public void ShowAlphanumericDisplayTest001()
+		[Test, Description("文字列を表示したか確認する"), Category("normal")]
+		public void ShowAlphanumericDisplayTest()
 		{
 			//オリジナルメソッドを退避
 			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
@@ -185,8 +183,8 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("文字列を5秒間(誤差が1秒未満)表示したか確認する"), Category("showAlphanumericDisplay")]
-		public void ShowAlphanumericDisplayTest002()
+		[Test, Description("文字列を5秒間(誤差が1秒未満)表示したか確認する"), Category("normal")]
+		public void ShowMessageForFiveSecondsTest()
 		{
 			//オリジナルメソッドを退避
 			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
@@ -208,8 +206,8 @@ namespace EV3Application.Test
 			Assert.IsTrue (1000 > Math.Abs((actual - expected).TotalMilliseconds));
 		}
 
-		[Test, Description("StateがStartedのとき何もせず、stateが変更されないか確認する"),Category("EnterPressed")]
-		public void EnterPressedTest001()
+		[Test, Description("StateがStartedのとき何もせず、stateが変更されないか確認する"),Category("normal")]
+		public void NotChangeStateTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
@@ -220,8 +218,8 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("StateがStartedではないときstateをEndに変更するか確認する"),Category("EnterPressed")]
-		public void EnterPressedTest002()
+		[Test, Description("StateがStartedではないときstateをEndに変更するか確認する"),Category("normal")]
+		public void ChangeStateTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
@@ -243,7 +241,6 @@ namespace EV3Application.Test
 		/// <param name="color">表示文字色、<c>true</c>なら黒、<c>false</c>なら白で表示する</param>
 		public void MyWriteText(MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color)
 		{
-			System.Console.WriteLine("MyWriteText is called, and message is " + message);
 		}
 
 		/// <summary>
@@ -252,7 +249,6 @@ namespace EV3Application.Test
 		/// <param name="yOffset">y座標のオフセット</param>
 		public void MyUpdate(int  yOffset = 0)
 		{
-			System.Console.WriteLine("MyUpdate is called");
 		}
 
 		/// <summary>
@@ -260,7 +256,6 @@ namespace EV3Application.Test
 		/// </summary>
 		public void MyClear()
 		{
-			System.Console.WriteLine ("MyClear is called");
 		}
 	}
 }
