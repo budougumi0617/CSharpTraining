@@ -37,20 +37,6 @@ namespace EV3Application.LCD
 		}
 
 		/// <summary>
-		/// テスト用。
-		/// LCD画面の状態をアプリケーション開始後状態に初期化し、インスタンスを生成する。
-		/// </summary>
-		/// <param name="state">LCD画面の状態</param>
-		/// <param name="sendSignal">スレッドの停止、開始を知らせるイベント</param>
-		/// <param name="currentDisplay">表示しているディスプレイ</param>
-		internal LCDController(State state, ManualResetEvent sendSignal, IDisplay currentDisplay)
-		{
-			this.state = state;
-			this.sendSignal = sendSignal;
-			this.currentDisplay = currentDisplay;
-		}
-
-		/// <summary>
 		/// <see cref="state"/>を参照して、LCD画面をコントロールする。
 		/// </summary>
 		/// <remarks>
