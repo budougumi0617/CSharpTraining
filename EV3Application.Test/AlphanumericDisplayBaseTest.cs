@@ -10,6 +10,7 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class AlphanumericDisplayBaseTest
 	{
+		#region MessageTest
 		[Test, Description("Messageに指定文字列のSet、Getを確認する"), Category("normal")]
 		public void  MessageAccessorTest()
 		{
@@ -22,9 +23,11 @@ namespace EV3Application.Test
 			//確認
 			Assert.AreEqual (expected, actual);
 		}
+		#endregion
 
+		#region isAlphanumericTest
 		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("normal")]
-		public void NormalAlphanumericSpaceTest()
+		public void OnlyValidCharactersTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -36,8 +39,8 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか確認する"), Category("abnormal")]
-		public void  MixedAlphanumericSpaceTest()
+		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか確認する"), Category("normal")]
+		public void  ContainsInvalidCharactersTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -49,8 +52,8 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか確認する"), Category("abnormal")]
-		public void AbnormalAlphanumericSpaceTest()
+		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか確認する"), Category("normal")]
+		public void OnlyInvalidCharactersTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -62,8 +65,8 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("Messageが空文字の時にfalseを返すか確認する"), Category("abnormal")]
-		public void  EmptyAlphanumericSpaceTest()
+		[Test, Description("Messageが空文字の時にfalseを返すか確認する"), Category("normal")]
+		public void  EmptyTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -75,8 +78,8 @@ namespace EV3Application.Test
 			Assert.AreEqual (expected, actual);
 		}
 
-		[Test, Description("Messageがnullの時にfalseを返すか確認する"), Category("abnormal")]
-		public void  NullAlphanumericSpaceTest()
+		[Test, Description("Messageがnullの時にfalseを返すか確認する"), Category("normal")]
+		public void  NullTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -87,5 +90,6 @@ namespace EV3Application.Test
 			//確認
 			Assert.AreEqual (expected, actual);
 		}
+		#endregion
 	}
 }

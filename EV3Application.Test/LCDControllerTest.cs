@@ -155,8 +155,14 @@ namespace EV3Application.Test
 				() => controller.ControlLCD ()
 			);
 		}
+		[Test, Description(""), Category("normal")]
+		public void Test()
+		{
+
+		}
+
 		/*
-		[Test, Description("InfoDialogを表示したか確認する"), Category("showInfoDialog")]
+		[Test, Description("InfoDialogを表示したか確認する"), Category("normal")]
 		public void ShowInfoDialogTest()
 		{
 			//準備
@@ -204,6 +210,18 @@ namespace EV3Application.Test
 			TimeSpan actual = after - before;
 			//確認
 			Assert.IsTrue (1000 > Math.Abs((actual - expected).TotalMilliseconds));
+		}
+
+		[Test, Description("文字列表示に失敗した際に、Exceptionをcatchするかどうか確認する"), Category("abnormal")]
+		public void CatchExceptionTest()
+		{
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			currentDisplayInfo.SetValue (controller, null);
+			//実行
+			showAlphanumericInfo.Invoke(controller, new Object[0]);
+			//確認
+			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
 		[Test, Description("StateがStartedのとき何もせず、stateが変更されないか確認する"),Category("normal")]

@@ -10,6 +10,7 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class InfoDialogTest
 	{
+		#region ConstructorTest
 		[Test, Description("Messageが初期化されるか確認する"), Category("normal")]
 		public void InitialiseMessageTest()
 		{
@@ -27,6 +28,8 @@ namespace EV3Application.Test
 
 			Assert.IsNotNull (infoDialog);
 		}
+		#endregion
+
 		/*
 		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか確認する"), Category("normal")]
 		public void CallShowTest()
