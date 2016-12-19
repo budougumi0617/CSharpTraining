@@ -10,25 +10,12 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class AlphanumericDisplayBaseTest
 	{
-		[Test, Description("Messageに指定文字列がSetされるか確認する"), Category("Message")]
-		public void  MessageTest001()
+		[Test, Description("Messageに指定文字列のSet、Getを確認する"), Category("Message")]
+		public void  MessageAccessorTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
-			string expected = "Set";
-			wrapper.Message = expected;
-			//実行
-			string actual = wrapper.Message;
-			//確認
-			Assert.AreEqual (expected, actual);
-		}
-
-		[Test, Description("MessageからSetされた文字列がGetできるか確認する"), Category("Message")]
-		public void  MessageTest002()
-		{
-			//準備
-			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
-			string expected = "Get";
+			string expected = "Test";
 			wrapper.Message = expected;
 			//実行
 			string actual = wrapper.Message;
@@ -37,7 +24,7 @@ namespace EV3Application.Test
 		}
 
 		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("isAlphanumeric")]
-		public void  IsAlphanumericTest001()
+		public void NormalAlphanumericSpaceTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -50,7 +37,7 @@ namespace EV3Application.Test
 		}
 
 		[Test, Description("半角英数字スペースとそれ以外が混在するMessageにfalseを返すか確認する"), Category("isAlphanumeric")]
-		public void  IsAlphanumericTest002()
+		public void  MixedAlphanumericSpaceTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -63,7 +50,7 @@ namespace EV3Application.Test
 		}
 
 		[Test, Description("半角英数字スペース以外のみのMessageにfalseを返すか確認する"), Category("isAlphanumeric")]
-		public void  IsAlphanumericTest003()
+		public void AbnormalAlphanumericSpaceTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -76,7 +63,7 @@ namespace EV3Application.Test
 		}
 
 		[Test, Description("Messageが空文字の時にfalseを返すか確認する"), Category("isAlphanumeric")]
-		public void  IsAlphanumericTest004()
+		public void  EmptyAlphanumericSpaceTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
@@ -89,7 +76,7 @@ namespace EV3Application.Test
 		}
 
 		[Test, Description("Messageがnullの時にfalseを返すか確認する"), Category("isAlphanumeric")]
-		public void  IsAlphanumericTest005()
+		public void  NullAlphanumericSpaceTest()
 		{
 			//準備
 			AlphanumericDisplayBaseWrapper wrapper = new AlphanumericDisplayBaseWrapper ();
