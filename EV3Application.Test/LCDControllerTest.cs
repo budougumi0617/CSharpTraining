@@ -14,57 +14,33 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class LCDControllerTest
 	{
-		private FieldInfo stateInfo;//<see cref="EV3Application.LCD.LCDCotroller.state"/>の情報
-		private FieldInfo sendSignalInfo;//<see cref="EV3Application.LCD.LCDController.sendSignal"/>の情報
-		private FieldInfo currentDisplayInfo;//<see cref="EV3Application.LCD.LCDController.currentDisplay"/>の情報
 		//private MethodInfo showInfoDialogInfo;//<see cref="EV3Application.LCD.LCDController.showInfoDialog"/>の情報
 		private MethodInfo showAlphanumericInfo;//<see cref="EV3Application.LCD.LCDController.showAlphanumericDisplay"/>の情報
-		private FieldInfo writeTextInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.writeText"/>の情報
-		private FieldInfo updateInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.update"/>の情報
-		private FieldInfo clearInfo;//<see cref="MonoBrickFirmwareWrapper.Display.LcdWrapper.clear"/>の情報
-		private Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool> originalWriteText;//元のメソッドを退避させるためのメソッド
-		private Action<int> originalUpdate;//元のメソッドを退避させるためのメソッド
-		private Action originalClear;//元のメソッドを退避させるためのメソッド
 
 		[TestFixtureSetUp, Description("リフレクションによって、テスト対象メンバの情報をフィールドに代入する")]
 		public void TestInitialiser()
 		{
-			stateInfo = (typeof(LCD.LCDController)).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
-			sendSignalInfo = (typeof(LCD.LCDController)).GetField("sendSignal", BindingFlags.NonPublic | BindingFlags.Instance);
-			currentDisplayInfo = (typeof(LCD.LCDController)).GetField("currentDisplay", BindingFlags.NonPublic | BindingFlags.Instance);
 			//showInfoDialogInfo = (typeof(LCD.LCDController)).GetMethod("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
 			showAlphanumericInfo = (typeof(LCD.LCDController)).GetMethod("showAlphanumericDisplay", BindingFlags.NonPublic | BindingFlags.Instance);
-			writeTextInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("writeText", BindingFlags.NonPublic | BindingFlags.Static);
-			updateInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("update", BindingFlags.NonPublic | BindingFlags.Static);
-			clearInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("clear", BindingFlags.NonPublic | BindingFlags.Static);
 		}
 
 		[SetUp, Description("オリジナルメソッド格納用の変数を初期化する")]
 		public void TestSetUp()
 		{
-			
-			originalWriteText = null;
-			originalUpdate = null;
-			originalClear = null;
+			//メソッド入れ替え
+			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "writeText", 
+				(MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color) => {});
+			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "update", (int yOffset) => {});
+			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "clear", () => {});
 		}
 
 		[TearDown, Description("退避させていたメソッドを戻す")]
 		public void TestTearDown()
 		{
-			if (originalWriteText != null)
-			{
-				writeTextInfo.SetValue (null, originalWriteText);
-				originalWriteText = null;
-			}
-			if(originalUpdate != null)
-			{
-				updateInfo.SetValue (null, originalUpdate);
-				originalUpdate = null;
-			}
-			if(originalClear != null)
-			{
-				clearInfo.SetValue (null, originalClear);
-				originalClear = null;
+			//メソッドを元に戻す
+			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "writeText");
+			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "update");
+			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "clear");
 			}
 		}
 
@@ -283,33 +259,6 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.End, Replacer.GetPrivateField<LCD.LCDController>(controller, "state"));
 		}
 		#endregion
-		//AlphanumericDisplay表示テスト用メソッド
-
-		/// <summary>
-		/// <see cref="MonoBrickFirmware.Display.Lcd.WriteText"/>の代わりに置き換えるメソッド。
-		/// </summary>
-		/// <param name="font">表示する文字のフォントサイズ</param>
-		/// <param name="point">画面の座標</param>
-		/// <param name="message">表示メッセージ</param>
-		/// <param name="color">表示文字色、<c>true</c>なら黒、<c>false</c>なら白で表示する</param>
-		public void MyWriteText(MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color)
-		{
-		}
-
-		/// <summary>
-		/// <see cref="MonoBrickFirmware.Display.Lcd.Update"/>の代わりに置き換えるメソッド。
-		/// </summary>
-		/// <param name="yOffset">y座標のオフセット</param>
-		public void MyUpdate(int  yOffset = 0)
-		{
-		}
-
-		/// <summary>
-		/// <see cref="MonoBrickFirmware.Display.Lcd.Clear"/>の代わりに置き換えるメソッド。
-		/// </summary>
-		public void MyClear()
-		{
-		}
 	}
 }
 
