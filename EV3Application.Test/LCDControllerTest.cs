@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using MonoBrickFirmware;
-using MonoBrickFirmwareWrapper;
+using MonoBrickFirmwareWrapper.Utilities;
 using EV3Application;
 using System.Reflection;
 using System.Threading;
@@ -14,7 +14,7 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class LCDControllerTest
 	{
-		private FieldInfo stateInfo;//<see cref="EV3Application.LCD.LCDController.state"/>の情報
+		private FieldInfo stateInfo;//<see cref="EV3Application.LCD.LCDCotroller.state"/>の情報
 		private FieldInfo sendSignalInfo;//<see cref="EV3Application.LCD.LCDController.sendSignal"/>の情報
 		private FieldInfo currentDisplayInfo;//<see cref="EV3Application.LCD.LCDController.currentDisplay"/>の情報
 		//private MethodInfo showInfoDialogInfo;//<see cref="EV3Application.LCD.LCDController.showInfoDialog"/>の情報
@@ -42,6 +42,7 @@ namespace EV3Application.Test
 		[SetUp, Description("オリジナルメソッド格納用の変数を初期化する")]
 		public void TestSetUp()
 		{
+			
 			originalWriteText = null;
 			originalUpdate = null;
 			originalClear = null;
@@ -67,6 +68,7 @@ namespace EV3Application.Test
 			}
 		}
 
+		#region Constructor Test
 		[Test, Description("フィールドstateが初期化されているか確認する"), Category("normal")]
 		public void InitialiseStateTest()
 		{
@@ -86,15 +88,17 @@ namespace EV3Application.Test
 			Assert.AreSame(mre, sendSignalInfo.GetValue(controller));
 		}
 
-		[Test, Description("LCDControllerクラスのインスタンスが生成されるか確認する"), Category("normal")]
+		[Test, Description("コンストラクタ実行時に例外が起きていないか確認する"), Category("normal")]
 		public void InstanceConstructorTest()
 		{
-			//準備
-			LCD.LCDController controller = new LCD.LCDController(new ManualResetEvent(false));
 			//実行、確認
-			Assert.IsNotNull(controller);
+			Assert.DoesNotThrow (
+				() => new LCD.LCDController(new ManualResetEvent(false))
+			);
 		}
+		#endregion
 
+		#region ControlLCD Test
 		[Test, Description("処理が終了した時、stateがStartedからEndに変更されているか確認する"), Category("normal")]
 		public void ChangedToEndTest()
 		{
@@ -106,7 +110,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("stateがStartedの時、InfoDialog、Hello、Good Byeを表示したか確認する"), Category("normal")]
+		[Test, Description("stateがStartedの時、例外なく処理が終了したか確認する"), Category("normal")]
 		public void ShowAllTest()
 		{
 			//準備
@@ -224,7 +228,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("StateがStartedのとき何もせず、stateが変更されないか確認する"),Category("normal")]
+		[Test, Description("StateがStartedの時、stateが変更されないか確認する"),Category("normal")]
 		public void NotChangeStateTest()
 		{
 			//準備
@@ -236,12 +240,14 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
 		}
 
-		[Test, Description("StateがStartedではないときstateをEndに変更するか確認する"),Category("normal")]
+		[Test, Description("StateがClosedInfoDialogの時、stateをEndに変更するか確認する"),Category("normal")]
 		public void ChangeStateTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			stateInfo.SetValue (controller, LCD.LCDController.State.ClosedInfoDialog);
+			Replacer.ReplacePrivateStaticField<ManualResetEvent>(LCD.LCDController, "sendSignal", new ManualResetEvent (false));
+			Replacer.ReplacePrivateStaticField<LCD.LCDController.State> (LCD.LCDController, "state", LCD.LCDController.State.ClosedInfoDialog);
+			//stateInfo.SetValue (controller, LCD.LCDController.State.ClosedInfoDialog);
 			//実行
 			controller.EnterPressed ();
 			//確認
