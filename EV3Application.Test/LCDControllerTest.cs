@@ -150,19 +150,13 @@ namespace EV3Application.Test
 			MethodInfo showDialogInfo = (typeof(LCD.LCDController)).GetMethod ("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
 		}
 		*/
-		[Test, Description("文字列を表示したか確認する"), Category("normal")]
+		[Test, Description("LCD.AlphanumericDisplay.Showを呼び出したか確認する"), Category("normal")]
 		public void ShowAlphanumericDisplayTest()
 		{
-			//オリジナルメソッドを退避
-			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
-			originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
-			originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
-			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
-			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
-			clearInfo.SetValue (null, (Action)this.MyClear);
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", new LCD.AlphanumericDisplay("Test"));
 			//実行、確認
 			Assert.DoesNotThrow(
 				() => showAlphanumericInfo.Invoke(controller, new Object[0])
@@ -172,16 +166,10 @@ namespace EV3Application.Test
 		[Test, Description("文字列を5秒間(誤差が+1秒未満)表示したか確認する"), Category("normal")]
 		public void ShowMessageForFiveSecondsTest()
 		{
-			//オリジナルメソッドを退避
-			originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
-			originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
-			originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			currentDisplayInfo.SetValue (controller, new LCD.AlphanumericDisplay("Test"));
-			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
-			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
-			clearInfo.SetValue (null, (Action)this.MyClear);
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", new LCD.AlphanumericDisplay("Test"));
 			TimeSpan expected = new TimeSpan(0,0,5);//予想表示時間(5秒)
 			//実行
 			DateTime before = DateTime.Now;//メソッド呼び出し前の時刻
