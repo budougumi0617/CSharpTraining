@@ -164,7 +164,7 @@ namespace EV3Application.Test
 		{
 
 		}
-
+		#endregion
 		/*
 		[Test, Description("InfoDialogを表示したか確認する"), Category("normal")]
 		public void ShowInfoDialogTest()
@@ -193,7 +193,7 @@ namespace EV3Application.Test
 			);
 		}
 
-		[Test, Description("文字列を5秒間(誤差が1秒未満)表示したか確認する"), Category("normal")]
+		[Test, Description("文字列を5秒間(誤差が+1秒未満)表示したか確認する"), Category("normal")]
 		public void ShowMessageForFiveSecondsTest()
 		{
 			//オリジナルメソッドを退避
@@ -206,14 +206,14 @@ namespace EV3Application.Test
 			writeTextInfo.SetValue(null, (Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool>)this.MyWriteText);
 			updateInfo.SetValue (null, (Action<int>)this.MyUpdate);
 			clearInfo.SetValue (null, (Action)this.MyClear);
-			TimeSpan expected = new TimeSpan(0,0,0,0,5000);//予想表示時間(5秒)
+			TimeSpan expected = new TimeSpan(0,0,5);//予想表示時間(5秒)
 			//実行
 			DateTime before = DateTime.Now;//メソッド呼び出し前の時刻
 			showAlphanumericInfo.Invoke(controller, new Object[0]);
 			DateTime after = DateTime.Now;//メソッド呼出し後の時刻
 			TimeSpan actual = after - before;
 			//確認
-			Assert.IsTrue (1000 > Math.Abs((actual - expected).TotalMilliseconds));
+			Assert.IsTrue (1 > (actual - expected).TotalSeconds >= 0);
 		}
 
 		[Test, Description("文字列表示に失敗した際に、Exceptionをcatchするかどうか確認する"), Category("abnormal")]
@@ -228,32 +228,60 @@ namespace EV3Application.Test
 			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
 		}
 
+		#region EnterPressed Test
 		[Test, Description("StateがStartedの時、stateが変更されないか確認する"),Category("normal")]
-		public void NotChangeStateTest()
+		public void StartedNotChangeToEndTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.Started);
 			stateInfo.SetValue (controller, LCD.LCDController.State.Started);
 			//実行
 			controller.EnterPressed ();
 			//確認
-			Assert.AreEqual(LCD.LCDController.State.Started, stateInfo.GetValue(controller));
+			Assert.AreEqual(LCD.LCDController.State.Started, Replacer.GetPrivateField<LCD.LCDController>(controller, "state"));
 		}
 
 		[Test, Description("StateがClosedInfoDialogの時、stateをEndに変更するか確認する"),Category("normal")]
-		public void ChangeStateTest()
+		public void ClosedInfoDialogChangeToEndTest()
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.ReplacePrivateStaticField<ManualResetEvent>(LCD.LCDController, "sendSignal", new ManualResetEvent (false));
-			Replacer.ReplacePrivateStaticField<LCD.LCDController.State> (LCD.LCDController, "state", LCD.LCDController.State.ClosedInfoDialog);
-			//stateInfo.SetValue (controller, LCD.LCDController.State.ClosedInfoDialog);
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.ClosedInfoDialog);
 			//実行
 			controller.EnterPressed ();
 			//確認
-			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
+			Assert.AreEqual(LCD.LCDController.State.End, Replacer.GetPrivateField<LCD.LCDController>(controller, "state"));
 		}
 
+		[Test, Description("StateがClearedTextHelloの時、stateをEndに変更するか確認する"),Category("normal")]
+		public void ClearedTextHelloChangeToEndTest()
+		{
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.ClearedTextHello);
+			//実行
+			controller.EnterPressed ();
+			//確認
+			Assert.AreEqual(LCD.LCDController.State.End, Replacer.GetPrivateField<LCD.LCDController>(controller, "state"));
+		}
+
+		[Test, Description("StateがEndの時、stateをEndのまま変更しないか確認する")]
+		public void EndNotChangeToOtherTest()
+		{
+			//準備
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.End);
+			//実行
+			controller.EnterPressed ();
+			//確認
+			Assert.AreEqual(LCD.LCDController.State.End, Replacer.GetPrivateField<LCD.LCDController>(controller, "state"));
+		}
+		#endregion
 		//AlphanumericDisplay表示テスト用メソッド
 
 		/// <summary>
