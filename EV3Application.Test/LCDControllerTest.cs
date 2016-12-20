@@ -213,7 +213,7 @@ namespace EV3Application.Test
 			DateTime after = DateTime.Now;//メソッド呼出し後の時刻
 			TimeSpan actual = after - before;
 			//確認
-			Assert.IsTrue (1 > (actual - expected).TotalSeconds >= 0);
+			Assert.IsTrue (1 > (actual - expected).TotalSeconds &&  (actual - expected).TotalSeconds >=0);
 		}
 
 		[Test, Description("文字列表示に失敗した際に、Exceptionをcatchするかどうか確認する"), Category("abnormal")]
@@ -221,11 +221,12 @@ namespace EV3Application.Test
 		{
 			//準備
 			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			currentDisplayInfo.SetValue (controller, null);
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", null);
 			//実行
 			showAlphanumericInfo.Invoke(controller, new Object[0]);
 			//確認
-			Assert.AreEqual(LCD.LCDController.State.End, stateInfo.GetValue(controller));
+			Assert.AreEqual(LCD.LCDController.State.End, Replacer.GetPrivateField<LCD.LCDController>(controller, "state"));
 		}
 
 		#region EnterPressed Test
