@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using NUnit.Framework;
+using MonoBrickFirmwareWrapper.Utilities;
 using EV3Application;
 
 namespace EV3Application.Test
@@ -11,8 +12,39 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class AlphanumericDisplayTest
 	{
-		#region Constructor Test
+		//フラッグを用意
+		private bool isWriteTextCalled;
+		private bool isUpdateCalled; 
+		private bool isClearCalled;
 
+		[SetUp, Description("Wrapperクラスのメソッドを入れ替える")]
+		public void TestSetUp()
+		{
+			//フラッグの初期化
+			isWriteTextCalled = false; 
+			isUpdateCalled = false; 
+			isClearCalled = false;
+			//メソッド入れ替え
+			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "writeText", 
+				(MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color) => {isWriteTextCalled = true;});
+			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "update", (int yOffset) => {isUpdateCalled = true;});
+			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "clear", () => {isClearCalled = true;});
+		}
+
+		[TearDown, Description("Wrapperクラスのメソッドを元に戻す")]
+		public void TestTearDown()
+		{
+			//メソッドを元に戻す
+			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "writeText");
+			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "update");
+			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "clear");
+			//フラッグの初期化
+			isWriteTextCalled = false; 
+			isUpdateCalled = false; 
+			isClearCalled = false;
+		}
+
+		#region Constructor Test
 		[Test, Description("Messageが初期化されるか確認する"), Category("normal")]
 		public void InitialiseMessageTest()
 		{
@@ -33,57 +65,32 @@ namespace EV3Application.Test
 				() => new LCD.AlphanumericDisplay ("Test")
 			);
 		}
-
 		#endregion
 
 		#region Show Method Test
-
 		[Test, Description("Messageが半角英数字スペースのみの時、MonoBrickFirmware.Display.Lcdクラスの各メソッド呼ばれるか確認する"), Category("normal")]
 		public void CallLcdMethodTest()
 		{
-			//ラッパーメソッドの情報を取得
-			FieldInfo writeTextInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("writeText", BindingFlags.NonPublic | BindingFlags.Static);
-			FieldInfo updateInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("update", BindingFlags.NonPublic | BindingFlags.Static);
-			FieldInfo clearInfo = (typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper)).GetField("clear", BindingFlags.NonPublic | BindingFlags.Static);
-			//オリジナルメソッドの情報を退避
-			Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool> originalWriteText = MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction;
-			Action<int> originalUpdate = MonoBrickFirmwareWrapper.Display.LcdWrapper.Update;
-			Action originalClear = MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear;
-			//フラッグを用意
-			bool isWriteTextCalled = false; 
-			bool isUpdateCalled = false; 
-			bool isClearCalled = false;
-			//入れ替えるためのメソッドを用意
-			Action<MonoBrickFirmware.Display.Font, MonoBrickFirmware.Display.Point, string, bool> myWriteText 
-			= (MonoBrickFirmware.Display.Font font, MonoBrickFirmware.Display.Point point, string message, bool color) => {isWriteTextCalled = true;};
-			Action<int> myUpdate = (int yOffset) => {isUpdateCalled = true;};
-			Action myClear = () => {isClearCalled = true;};
-			//入れ替え
-			writeTextInfo.SetValue(null, myWriteText);
-			updateInfo.SetValue (null, myUpdate);
-			clearInfo.SetValue (null, myClear);
+			//準備
 			LCD.AlphanumericDisplay alphanumericDisplay = new LCD.AlphanumericDisplay("Test");
+			alphanumericDisplay.Message =  "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789";
 			//実行
 			alphanumericDisplay.Show();
 			//確認
 			Assert.IsTrue(isWriteTextCalled && isUpdateCalled && isClearCalled);
-			//オリジナルメソッドを戻す
-			writeTextInfo.SetValue (null, originalWriteText);
-			updateInfo.SetValue (null, originalUpdate);
-			clearInfo.SetValue (null, originalClear);
 		}
 
 		[Test, Description("Messageに半角英数字スペース以外がSetされているときにInvalidOperationExceptionをthrowするか確認する"), Category("abnormal")]
 		public void ThrowInvalidOperationExceptionTest()
 		{
 			//準備
-			LCD.AlphanumericDisplay alphanumericDisplay = new LCD.AlphanumericDisplay("fdui (#) % 6");
+			LCD.AlphanumericDisplay alphanumericDisplay = new LCD.AlphanumericDisplay("Test");
+			alphanumericDisplay.Message =  "fdui (#) % 6";
 			//実行、確認
 			Assert.Throws <InvalidOperationException>(
 				() => alphanumericDisplay.Show ()
 			);
 		}
-
 		#endregion
 	}
 }

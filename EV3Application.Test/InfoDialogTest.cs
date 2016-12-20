@@ -11,14 +11,15 @@ namespace EV3Application.Test
 	public class InfoDialogTest
 	{
 		#region Constructor Test
-
 		[Test, Description("Messageが初期化されるか確認する"), Category("normal")]
 		public void InitialiseMessageTest()
 		{
+			//準備
 			string expected = "Test";
 			LCD.InfoDialog infoDialog = new LCD.InfoDialog (expected);
+			//実行
 			string actual = infoDialog.Message;
-
+			//確認
 			Assert.AreEqual (expected, actual); 
 		}
 
@@ -30,18 +31,18 @@ namespace EV3Application.Test
 				() => new LCD.InfoDialog ("Test")
 			);
 		}
-
 		#endregion
 
 		#region Show Method Test
 
 		//TODO:InfoDialogをクラスメンバとして持つように、テスト対象クラスの設計を変更する
 		//MonoBrickFrimware.Display.InfoDialogをテスト対象メソッド内でnewしているため、外部からモックの注入ができない
-		//そのため、このテストケースはデバッグ確認を行うこととする
+		//このテストケースはデバッグ確認を行うこととする
 		/*
 		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか確認する"), Category("normal")]
 		public void CallShowTest()
 		{
+			//準備
 			LCD.InfoDialog infoDialog = new LCD.InfoDialog ("abcde");
 			infoDialog.Show ();
 		}
@@ -50,13 +51,14 @@ namespace EV3Application.Test
 		[Test, Description("Messageに半角英数字スペース以外がSetされているときにExceptionがthrowされるか確認する"), Category("abnormal")]
 		public void ThrowInvalidOperationExceptionTest()
 		{
-			LCD.InfoDialog infoDialog = new LCD.InfoDialog ("fdui (#) % 6");
-
+			//準備
+			LCD.InfoDialog infoDialog = new LCD.InfoDialog ("Test");
+			infoDialog.Message = "fdui (#) % 6";
+			//実行、確認
 			Assert.Throws <InvalidOperationException>(
 				() => infoDialog.Show()
 			);
 		}
-
 		#endregion
 	}
 }

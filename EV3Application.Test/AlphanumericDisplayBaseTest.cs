@@ -10,7 +10,7 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class AlphanumericDisplayBaseTest
 	{
-		#region MessageTest
+		#region Message Test
 		[Test, Description("Messageに指定文字列のSet、Getを確認する"), Category("normal")]
 		public void  MessageAccessorTest()
 		{
@@ -25,7 +25,7 @@ namespace EV3Application.Test
 		}
 		#endregion
 
-		#region isAlphanumericTest
+		#region isAlphanumeric Test
 		[Test, Description("半角英数字スペースのみのMessageにtrueを返すか確認する"), Category("normal")]
 		public void OnlyValidCharactersTest()
 		{
