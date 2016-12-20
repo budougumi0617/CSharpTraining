@@ -11,7 +11,8 @@ namespace EV3Application.Test
 	[TestFixture]
 	public class AlphanumericDisplayTest
 	{
-		#region ConstructorTest
+		#region Constructor Test
+
 		[Test, Description("Messageが初期化されるか確認する"), Category("normal")]
 		public void InitialiseMessageTest()
 		{
@@ -24,7 +25,7 @@ namespace EV3Application.Test
 			Assert.AreEqual(expected, actual);
 		}
 
-		[Test, Description("AlphanumericDisplayクラスのインスタンスが生成されるか確認する"), Category("normal")]
+		[Test, Description("コンストラクタ実行時に例外が起きていないか確認する"), Category("normal")]
 		public void InstanceConstructorTest()
 		{
 			//実行、確認
@@ -32,9 +33,11 @@ namespace EV3Application.Test
 				() => new LCD.AlphanumericDisplay ("Test")
 			);
 		}
+
 		#endregion
 
-		#region ShowTest
+		#region Show Method Test
+
 		[Test, Description("Messageが半角英数字スペースのみの時、MonoBrickFirmware.Display.Lcdクラスの各メソッド呼ばれるか確認する"), Category("normal")]
 		public void CallLcdMethodTest()
 		{
@@ -70,7 +73,7 @@ namespace EV3Application.Test
 			clearInfo.SetValue (null, originalClear);
 		}
 
-		[Test, Description("Messageに半角英数字スペース以外がSetされているときにInvalidOperationExceptionをthrowするか確認する"), Category("normal")]
+		[Test, Description("Messageに半角英数字スペース以外がSetされているときにInvalidOperationExceptionをthrowするか確認する"), Category("abnormal")]
 		public void ThrowInvalidOperationExceptionTest()
 		{
 			//準備
@@ -80,6 +83,7 @@ namespace EV3Application.Test
 				() => alphanumericDisplay.Show ()
 			);
 		}
+
 		#endregion
 	}
 }
