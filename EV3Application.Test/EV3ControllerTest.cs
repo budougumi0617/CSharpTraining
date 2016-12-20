@@ -12,7 +12,7 @@ namespace EV3Application.Test
 	{
 		//TODO:EV3Controllerにフィールドを作成し、コンストラクタで中身を入れるように設計を変更する
 		//ControlEV3内で、いくつかのクラスをnewしているため、モックが注入できない
-		//そのため、テスト環境でEV3Controller.ControlLcdを呼び出すと落ちてしまう
+		//そのため、テスト環境でこのテストケースを実施すると落ちてしまう
 		//このテストケースはデバッグ確認を行うこととする
 		/*
 		[Test, Description("ControlLCDを呼び出し、機能が実現できているか"), Category("normal")]
