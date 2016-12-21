@@ -7,7 +7,7 @@ using EV3Application;
 namespace EV3Application.Test
 {
 	/// <summary>
-	///<see cref="EV3Application.LCD.AlphanumericDisplay"/>のテストクラス。
+	/// <see cref="EV3Application.LCD.AlphanumericDisplay"/>のテストクラス。
 	/// </summary>
 	[TestFixture]
 	public class AlphanumericDisplayTest

@@ -36,8 +36,9 @@ namespace EV3Application.Test
 		#region Show Method Test
 
 		//TODO:InfoDialogをクラスメンバとして持つように、テスト対象クラスの設計を変更する
-		//MonoBrickFrimware.Display.InfoDialogをテスト対象メソッド内でnewしているため、外部からモックの注入ができない
-		//このテストケースはデバッグ確認を行うこととする
+		//テスト対象メソッド内で、ハード環境に依存するクラスのインスタンスを生成しているため、外部からモックの注入ができず、実機上でしか動かすことができない
+		//そのため、テスト環境でこのケースを実施すると落ちてしまう
+		//よって、このテスト対象メソッドはデバッグ確認によって、品質確認を行う
 		/*
 		[Test, Description("Messageに半角英数字スペースのみの時、MonoBrickFirmwareのInfoDialogクラスのshowメソッド呼ばれるか確認する"), Category("normal")]
 		public void CallShowTest()

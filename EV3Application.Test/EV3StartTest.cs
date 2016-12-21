@@ -11,9 +11,9 @@ namespace EV3Application.Test
 	public class EV3StartTest
 	{
 		//TODO:EV3Application.EV3Controllerにフィールドを作成し、コンストラクタで中身を入れるように設計を変更する
-		//EV3Start.Mainの呼び出し先のControlEV3内で、いくつかのクラスをnewしているため、モックが注入できない
-		//そのため、テスト環境でこのテストケースを実施すると落ちてしまう
-		//このテストケースはデバッグ確認を行うこととする
+		//テスト対象メソッドの呼び出し先で、ハード環境に依存するクラスのインスタンスを生成しているため、外部からモックの注入ができず、実機上でしか動かすことができない
+		//そのため、テスト環境でこのケースを実施すると落ちてしまう
+		//よって、このテスト対象メソッドはデバッグ確認によって、品質確認を行う
 		/*
 		[Test, Description("ControlEV3が呼び出し、アプリケーションが開始できているか確認する"), Category("normal")]
 		public void CallControlEV3Test()

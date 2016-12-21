@@ -15,11 +15,6 @@ namespace EV3Application.Test
 	public class LCDControllerTest
 	{
 		/// <summary>
-		/// <see cref="EV3Application.LCD.LCDController.showInfoDialog"/>の情報
-		/// </summary>
-		//private MethodInfo showInfoDialogInfo;
-
-		/// <summary>
 		/// <see cref="EV3Application.LCD.LCDController.showAlphanumericDisplay"/>の情報
 		/// </summary>
 		private MethodInfo showAlphanumericInfo;
@@ -27,12 +22,11 @@ namespace EV3Application.Test
 		[TestFixtureSetUp, Description("リフレクションによって、テスト対象メンバの情報をフィールドに代入する")]
 		public void TestInitialiser()
 		{
-			//showInfoDialogInfo = (typeof(LCD.LCDController)).GetMethod("showInfoDialog", BindingFlags.NonPublic | BindingFlags.Instance);
 			showAlphanumericInfo = (typeof(LCD.LCDController)).GetMethod("showAlphanumericDisplay", BindingFlags.NonPublic | BindingFlags.Instance);
 		}
 
-		[SetUp, Description("オリジナルメソッド格納用の変数を初期化する")]
-		public void TestSetUp()
+		[SetUp, Description("Wrapperに格納されているメソッドをテスト用のメソッドに入れ替える")]
+		public void ReplaceMethod()
 		{
 			//メソッド入れ替え
 			Replacer.ReplaceWrapperMethod(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "writeText", 
@@ -42,12 +36,31 @@ namespace EV3Application.Test
 		}
 
 		[TearDown, Description("退避させていたメソッドを戻す")]
-		public void TestTearDown()
+		public void RepositMethod()
 		{
 			//メソッドを元に戻す
 			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "writeText");
 			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "update");
 			Replacer.RestorePrivateStaticField(typeof(MonoBrickFirmwareWrapper.Display.LcdWrapper), "clear");
+		}
+
+		/// <summary>
+		/// <see cref="EV3Application.LCD.LCDController"/>のインスタンスを生成し、テストケースごとにセットアップする
+		/// </summary>
+		/// <returns>LCDControllerのインスタンス</returns>
+		/// <param name="sendSignal"><see cref="EV3Application.LCD.LCDController.sendSignal"/>に設定するオブジェクト</param>
+		/// <param name="state"><see cref="EV3Application.LCD.LCDController.state"/>に設定するオブジェクト</param>
+		/// <param name="currentDisplay"><see cref ="EV3Application.LCD.LCDController.current display"/>に設定するオブジェクト</param>
+		public LCD.LCDController SetUpTestTarget
+		(ManualResetEvent sendSignal, LCD.LCDController.State state, LCD.IDisplay currentDisplay = null)
+		{
+			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
+
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", sendSignal);
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", state);
+			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", currentDisplay);
+
+			return controller;
 		}
 
 		#region Constructor Test
@@ -85,9 +98,7 @@ namespace EV3Application.Test
 		public void ChangeToEndTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", LCD.LCDController.State.Started);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.Started);
 			//実行
 			controller.ControlLCD();
 			//確認
@@ -98,9 +109,7 @@ namespace EV3Application.Test
 		public void ExecuteFromStartedTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", LCD.LCDController.State.Started);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.Started);
 			//実行、確認
 			Assert.DoesNotThrow(
 				() => controller.ControlLCD()
@@ -111,9 +120,7 @@ namespace EV3Application.Test
 		public void ExecuteFromClosedInfoDialogTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", LCD.LCDController.State.ClosedInfoDialog);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClosedInfoDialog);
 			//実行、確認
 			Assert.DoesNotThrow (
 				() => controller.ControlLCD ()
@@ -124,10 +131,7 @@ namespace EV3Application.Test
 		public void ExecuteFromClearedTextHelloTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", LCD.LCDController.State.ClearedTextHello);
-			Replacer.SetPrivateField<LCD.LCDController> (controller, "currentDisplay", new LCD.AlphanumericDisplay("Test"));
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClearedTextHello, new LCD.AlphanumericDisplay("Test"));
 			//実行、確認
 			Assert.DoesNotThrow (
 				() => controller.ControlLCD ()
@@ -138,9 +142,7 @@ namespace EV3Application.Test
 		public void ExecuteFromEndTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", LCD.LCDController.State.End);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.End);
 			//実行
 			controller.ControlLCD();
 			//確認
@@ -151,9 +153,8 @@ namespace EV3Application.Test
 		public void ExecuteFromInvalidStateTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "state", 6);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.Started);
+			Replacer.SetPrivateField(controller, "state", 4);//Stateの定義はEnumの3までのため、それ以上の値を入れると強制的にEndに変更されるはず
 			//実行
 			controller.ControlLCD();
 			//確認
@@ -164,9 +165,9 @@ namespace EV3Application.Test
 		#region showInfoDialog Test
 
 		//TODO:EV3Application.LCD.InfoDialogにフィールドを作成し、コンストラクタで中身を入れるように設計を変更する
-		//LCDController.showInfoDialogの呼び出し先のshowメソッド内で、MonoBrickFirmwareのクラスをnewしているため、モックが注入できない
+		//テスト対象メソッド内で、ハード環境に依存するクラスのインスタンスを生成しているため、外部からモックの注入ができず、実機上でしか動かすことができない
 		//そのため、テスト環境でこのケースを実施すると落ちてしまう
-		//このテストケースはデバッグ確認を行うこととする
+		//よって、このテスト対象メソッドはデバッグ確認によって、品質確認を行う
 		/*
 		[Test, Description("InfoDialogを表示したか確認する"), Category("normal")]
 		public void ShowInfoDialogTest()
@@ -183,9 +184,7 @@ namespace EV3Application.Test
 		public void CallAlphanumericDisplayShowTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", new LCD.AlphanumericDisplay("Test"));
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClearedTextHello, new LCD.AlphanumericDisplay("Test"));
 			//実行、確認
 			Assert.DoesNotThrow(
 				() => showAlphanumericInfo.Invoke(controller, new Object[0])
@@ -196,9 +195,7 @@ namespace EV3Application.Test
 		public void ShowMessageForFiveSecondsTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", new LCD.AlphanumericDisplay("Test"));
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClearedTextHello, new LCD.AlphanumericDisplay("Test"));
 			TimeSpan expected = new TimeSpan(0,0,5);//予想表示時間(5秒)
 			//実行
 			DateTime before = DateTime.Now;//メソッド呼び出し前の時刻
@@ -213,9 +210,7 @@ namespace EV3Application.Test
 		public void CatchExceptionTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "currentDisplay", null);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClosedInfoDialog);
 			//実行
 			showAlphanumericInfo.Invoke(controller, new Object[0]);
 			//確認
@@ -228,9 +223,7 @@ namespace EV3Application.Test
 		public void StartedNotChangeToEndTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.Started);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.Started);
 			//実行
 			controller.EnterPressed ();
 			//確認
@@ -241,9 +234,7 @@ namespace EV3Application.Test
 		public void ClosedInfoDialogChangeToEndTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.ClosedInfoDialog);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClosedInfoDialog);
 			//実行
 			controller.EnterPressed ();
 			//確認
@@ -254,9 +245,7 @@ namespace EV3Application.Test
 		public void ClearedTextHelloChangeToEndTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.ClearedTextHello);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.ClearedTextHello);
 			//実行
 			controller.EnterPressed ();
 			//確認
@@ -267,9 +256,7 @@ namespace EV3Application.Test
 		public void EndNotChangeToOtherTest()
 		{
 			//準備
-			LCD.LCDController controller = new LCD.LCDController (new ManualResetEvent(false));
-			Replacer.SetPrivateField<LCD.LCDController>(controller, "sendSignal", new ManualResetEvent (false));
-			Replacer.SetPrivateField<LCD.LCDController> (controller, "state", LCD.LCDController.State.End);
+			LCD.LCDController controller = SetUpTestTarget(new ManualResetEvent(false), LCD.LCDController.State.End);
 			//実行
 			controller.EnterPressed ();
 			//確認
