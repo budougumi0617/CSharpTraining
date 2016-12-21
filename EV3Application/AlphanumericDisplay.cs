@@ -39,11 +39,6 @@ namespace EV3Application.LCD
 			MonoBrickFirmwareWrapper.Display.LcdWrapper.Clear();
 			MonoBrickFirmwareWrapper.Display.LcdWrapper.WriteTextAction(font,new Point(width, height), Message, true);
 			MonoBrickFirmwareWrapper.Display.LcdWrapper.Update(0);
-			/*
-			Lcd.Clear();
-			Lcd.WriteText(font, new Point(width, height), Message, true);
-			Lcd.Update();
-			*/
 		}
 	}
 }
