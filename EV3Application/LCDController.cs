@@ -47,7 +47,6 @@ namespace EV3Application.LCD
 		private State state; //LCDの状態
 		private ManualResetEvent sendSignal; //スレッドの停止、開始を知らせるイベント
 		private IDisplay currentDisplay; //表示しているディスプレイ
-		private const int waitAlphanumericDisplay = 5000; //文字列を表示する時間
 
 		/// <summary>
 		/// LCDの状態をアプリケーション開始後状態に初期化し、インスタンスを生成する。
@@ -91,7 +90,7 @@ namespace EV3Application.LCD
 
 				case State.ClosedInfoDialog:
 					currentDisplay = new AlphanumericDisplay("Hello");
-					showAlphanumericDisplay(waitAlphanumericDisplay);
+					showAlphanumericDisplay();
 					if (state == State.End)
 					{
 						return;
@@ -104,7 +103,7 @@ namespace EV3Application.LCD
 
 				case State.ClearedTextHello:
 					currentDisplay.Message = "Good Bye";
-					showAlphanumericDisplay(waitAlphanumericDisplay);
+					showAlphanumericDisplay();
 					state = State.End;
 					break;
 
@@ -145,13 +144,13 @@ namespace EV3Application.LCD
 		/// エラーが発生しなければ、文字列を5秒間表示する。</br>
 		/// エラーが発生した場合は、アプリケーションを終了する。
 		/// </remarks>
-		private void showAlphanumericDisplay(int waitAlphanumericDisplay)
+		private void showAlphanumericDisplay()
 		{
 			try
 			{
 				currentDisplay.Show();
 				sendSignal.Reset();
-				sendSignal.WaitOne(waitAlphanumericDisplay);
+				sendSignal.WaitOne(5000);
 			}
 			catch(Exception e)
 			{
