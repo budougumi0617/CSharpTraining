@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// AlphanumericDisplayTest.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using System.Reflection;
 using NUnit.Framework;
 using MonoBrickFirmwareWrapper.Utilities;

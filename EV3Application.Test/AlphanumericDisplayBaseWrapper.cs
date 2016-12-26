@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// AlphanumericDisplayBaseWrapper.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using EV3Application.LCD;
 
 namespace EV3Application.Test

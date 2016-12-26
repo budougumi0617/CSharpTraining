@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// LCDControllerTest.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using NUnit.Framework;
 using MonoBrickFirmware;
 using MonoBrickFirmwareWrapper.Utilities;
