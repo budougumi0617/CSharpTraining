@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// AssemblyInfo.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using System.Reflection; 
 using System.Runtime.CompilerServices;
 

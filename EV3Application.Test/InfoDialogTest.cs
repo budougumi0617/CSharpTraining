@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// InfoDialogTest.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using NUnit.Framework;
 using EV3Application;
 

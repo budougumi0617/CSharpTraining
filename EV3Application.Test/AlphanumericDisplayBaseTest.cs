@@ -1,4 +1,11 @@
-﻿using NUnit.Framework;
+﻿//
+// AlphanumericDisplayBaseTest.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using NUnit.Framework;
 using System;
 using EV3Application;
 

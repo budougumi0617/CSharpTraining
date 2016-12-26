@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// EV3Start.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 
 namespace EV3Application
 {
