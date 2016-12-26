@@ -84,7 +84,6 @@ namespace EV3Application.LCD
 			{
 				switch(state)
 				{
-
 				case State.Started:
 					showInfoDialog();
 					state = State.ClosedInfoDialog;
