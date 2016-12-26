@@ -47,7 +47,7 @@ namespace EV3Application.LCD
 		private State state; //LCDの状態
 		private ManualResetEvent sendSignal; //スレッドの停止、開始を知らせるイベント
 		private IDisplay currentDisplay; //表示しているディスプレイ
-		private const int waitAlphanumericDisplay = 5000;
+		private const int waitAlphanumericDisplay = 5000; //文字列を表示する時間
 
 		/// <summary>
 		/// LCDの状態をアプリケーション開始後状態に初期化し、インスタンスを生成する。
