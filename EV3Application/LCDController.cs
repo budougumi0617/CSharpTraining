@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// LCDController.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using System.Threading;
 using MonoBrickFirmware;
 using MonoBrickFirmware.Display.Dialogs;
@@ -7,37 +14,53 @@ using MonoBrickFirmware.Display;
 namespace EV3Application.LCD
 {
 	/// <summary>
-	/// LCD画面を制御するクラス。
+	/// LCDを制御するクラス。
 	/// </summary>
 	public class LCDController
 	{
 		/// <summary>
-		/// LCD画面の状態を表す。
+		/// LCDの状態を表す。
 		/// </summary>
 		public enum State
 		{
-			Started, //アプリケーション開始後
-			ClosedInfoDialog, //InfoDialog消去後
-			ClearedTextHello, //Helloメッセージ消去後
-			End //アプリケーション終了
+			/// <summary>
+			/// アプリケーション開始後。
+			/// </summary>
+			Started,
+
+			/// <summary>
+			/// InfoDialog消去後。
+			/// </summary>
+			ClosedInfoDialog, 
+
+			/// <summary>
+			/// Helloメッセージ消去後。
+			/// </summary>
+			ClearedTextHello,
+
+			/// <summary>
+			/// アプリケーション終了。
+			/// </summary>
+			End
 		}
 
-		private State state; //LCD画面の状態
+		private State state; //LCDの状態
 		private ManualResetEvent sendSignal; //スレッドの停止、開始を知らせるイベント
 		private IDisplay currentDisplay; //表示しているディスプレイ
+		private const int waitAlphanumericDisplay = 5000;
 
 		/// <summary>
-		/// LCD画面の状態をアプリケーション開始後状態に初期化し、インスタンスを生成する。
+		/// LCDの状態をアプリケーション開始後状態に初期化し、インスタンスを生成する。
 		/// </summary>
 		/// <param name="sendSignal">スレッドの停止、開始を知らせるイベント</param>
-		public LCDController (ManualResetEvent sendSignal)
+		public LCDController(ManualResetEvent sendSignal)
 		{
 			state = State.Started;
 			this.sendSignal = sendSignal;
 		}
 
 		/// <summary>
-		/// <see cref="state"/>を参照して、LCD画面をコントロールする。
+		/// <see cref="state"/>を参照して、LCDをコントロールする。
 		/// </summary>
 		/// <remarks>
 		/// <list type="bullet">
@@ -63,13 +86,13 @@ namespace EV3Application.LCD
 				{
 
 				case State.Started:
-					showInfoDialog ();
+					showInfoDialog();
 					state = State.ClosedInfoDialog;
 					break;
 
 				case State.ClosedInfoDialog:
 					currentDisplay = new AlphanumericDisplay("Hello");
-					showAlphanumericDisplay();
+					showAlphanumericDisplay(waitAlphanumericDisplay);
 					if (state == State.End)
 					{
 						return;
@@ -82,11 +105,11 @@ namespace EV3Application.LCD
 
 				case State.ClearedTextHello:
 					currentDisplay.Message = "Good Bye";
-					showAlphanumericDisplay();
+					showAlphanumericDisplay(waitAlphanumericDisplay);
 					state = State.End;
 					break;
 
-				default:
+				default: // このケースに入ることはない
 					state = State.End;
 					break;
 				}
@@ -94,12 +117,12 @@ namespace EV3Application.LCD
 		}
 									
 		/// <summary>
-		/// LCD画面上に<c>InfoDialog</c>を表示する。
+		/// LCD上に<c>InfoDialog</c>を表示する。
 		/// </summary>
 		/// <remarks>
-		/// ユーザー入力があるまでこのメソッドから戻らない。</br>
-		/// エラーが発生しなければ、InfoDialog表示する。</br>
-		/// エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。
+		/// ユーザー入力があるまでこのメソッドは終了しない。</br>
+		/// エラーが発生しなければ、InfoDialogを表示する。</br>
+		/// エラーが発生した場合は、アプリケーションを終了する。
 		/// </remarks>
 		private void showInfoDialog()
 		{
@@ -116,20 +139,20 @@ namespace EV3Application.LCD
 		}
 
 		/// <summary>
-		/// LCD画面上に文字列を表示する。
+		/// LCD上に文字列を表示する。
 		/// </summary>
 		/// <remarks>
-		/// ユーザ入力があるか、5秒経過するまでこのメソッドから戻らない。</br>
+		/// ユーザ入力があるか、5秒経過するまでこのメソッドは終了しない。</br>
 		/// エラーが発生しなければ、文字列を5秒間表示する。</br>
-		/// エラーが発生した場合は、<see cref="EV3Application.LCDController.state"/>を<see cref="EV3Application.LCDController.State.End"/>に変更する。
+		/// エラーが発生した場合は、アプリケーションを終了する。
 		/// </remarks>
-		private void showAlphanumericDisplay()
+		private void showAlphanumericDisplay(int waitAlphanumericDisplay)
 		{
 			try
 			{
 				currentDisplay.Show();
 				sendSignal.Reset();
-				sendSignal.WaitOne(5000);
+				sendSignal.WaitOne(waitAlphanumericDisplay);
 			}
 			catch(Exception e)
 			{
@@ -138,7 +161,7 @@ namespace EV3Application.LCD
 		}
 
 		/// <summary>
-		/// EnterButtonが押下された際の処理を実行する。
+		/// EnterButtonが押下された際に、アプリケーション終了処理を実行する。
 		/// </summary>
 		/// <remarks>
 		/// <see cref="state"/>が<see cref="EV3Application.LCDController.State.Started"/>の時、何もしない。</br>

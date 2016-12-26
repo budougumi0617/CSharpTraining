@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// AlphanumericDisplay.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using MonoBrickFirmware;
 using MonoBrickFirmware.Display.Dialogs;
 using MonoBrickFirmware.Display;

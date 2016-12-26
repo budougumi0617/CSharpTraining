@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// EV3Controller.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MonoBrickFirmware.UserInput;
@@ -12,7 +19,7 @@ namespace EV3Application
 	public class EV3Controller
 	{
 		/// <summary>
-		/// 各コントローラーを使用して、機能を実現する。
+		/// <see cref="EV3Application.LCD.LCDController"/>を使用して、画面表示機能を実現する。
 		/// </summary>
 		public void ControlEV3()
 		{

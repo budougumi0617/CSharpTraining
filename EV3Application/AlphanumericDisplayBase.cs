@@ -1,4 +1,11 @@
-﻿using System;
+﻿//
+// AlphanumericDisplayBase.cs
+//
+// Author:Yojiro Nanameki
+//
+// Copyright (c) 2016 
+
+using System;
 using System.Text.RegularExpressions;
 
 namespace EV3Application.LCD
@@ -17,7 +24,7 @@ namespace EV3Application.LCD
 		/// 半角英数字スペースを画面に表示する。
 		/// </summary>
 		/// <exception cref="System.InvalidOperationException">
-		/// ディスプレイが半角英数字スペース以外を含む場合に例外を出す。
+		/// 半角英数字スペース以外を含む場合に例外を出す。
 		/// </exception>
 		public abstract void Show();
 
